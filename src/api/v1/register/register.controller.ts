@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Body, Controller, Post, Get, HttpCode } from '@nestjs/common';
 import { RegisterService } from './register.service';
 
 @Controller({
