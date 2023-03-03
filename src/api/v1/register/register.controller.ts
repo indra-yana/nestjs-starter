@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, HttpException, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, Get, UseInterceptors, HttpCode } from '@nestjs/common';
 import { RegisterService } from './register.service';
 
 @Controller({
@@ -10,6 +10,7 @@ export class RegisterController {
         private registerService: RegisterService,
     ) { }
 
+    @HttpCode(200)
     @Post('register')
     async register(@Body() body: object) {
         try {
@@ -19,6 +20,7 @@ export class RegisterController {
         }
     }
 
+    @HttpCode(200)
     @Get('find-all')
     async findAll() {
         try {
