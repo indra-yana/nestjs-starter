@@ -1,5 +1,4 @@
 import { Body, Controller, Post, Get, HttpException, HttpStatus } from '@nestjs/common';
-import { AppService } from 'src/api/v1/main/app.service';
 import { RegisterService } from './register.service';
 
 @Controller({
@@ -7,7 +6,9 @@ import { RegisterService } from './register.service';
     version: '1',
 })
 export class RegisterController {
-    constructor(private registerService: RegisterService, private appService: AppService){}
+    constructor(
+        private registerService: RegisterService,
+    ) { }
 
     @Post('register')
     async register(@Body() body: object) {
@@ -22,16 +23,6 @@ export class RegisterController {
     async findAll() {
         try {
             return this.registerService.findAll();
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    @Get('hello-world')
-    async getHello() {
-        try {
-            throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-            return this.appService.getHello();
         } catch (error) {
             throw error;
         }

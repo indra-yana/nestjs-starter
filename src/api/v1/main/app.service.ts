@@ -1,8 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppService {
+  constructor(
+    private config: ConfigService
+  ) { }
+
   getHello(): any {
-    return 'Nest Js REST API!';
+    const appName = this.config.get('app.name');
+    const appVersion = this.config.get('app.version');
+
+    return `${appName} - ${appVersion}`;
   }
 }
