@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-// @Catch(HttpException)
+// @Catch(HttpException) // No need, because this use generic type exception
 export class HttpExceptionFilter<T> implements ExceptionFilter {
   catch(exception: T, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -15,9 +15,11 @@ export class HttpExceptionFilter<T> implements ExceptionFilter {
 
     let code: any = 500;
     let message: string = '';
+    let detail: any = null;
     if (exception instanceof HttpException) {
       code = exception.getStatus();
       message = exception.message;
+      detail = exception.getResponse();
     }
 
     // TODO: add more http exception handler
@@ -25,7 +27,7 @@ export class HttpExceptionFilter<T> implements ExceptionFilter {
     response.status(code).send({
       code,
       message,
-      error: exception,
+      error: detail,
     });
   }
 }
