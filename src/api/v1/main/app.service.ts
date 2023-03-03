@@ -13,4 +13,11 @@ export class AppService {
 
     return `${appName} - ${appVersion}`;
   }
+
+  getHelloFromApi(): any {
+    const appName = this.config.get('app.name');
+    const appVersion = this.config.get('app.version');
+
+    return `${appName} REST API - ${appVersion}`;
+  }
 }
