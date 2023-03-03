@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './main/app.controller';
-import { AppService } from './main/app.service';
+import { ConfigModule } from '@nestjs/config';
+import { AppModule } from './main/app.module';
 import { RegisterModule } from './register/register.module';
 
 @Module({
-    imports: [RegisterModule],
-    controllers: [AppController],
-    providers: [AppService],
+    imports: [
+        ConfigModule,
+        AppModule, 
+        RegisterModule
+    ],
 })
-export class ApiV1Module {}
+export class ApiV1Module { }
