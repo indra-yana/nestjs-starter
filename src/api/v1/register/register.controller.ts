@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Get, HttpException, HttpStatus } from '@nestjs/common';
-import { AppService } from 'src/app.service';
+import { AppService } from 'src/api/v1/main/app.service';
 import { RegisterService } from './register.service';
 
 @Controller({
