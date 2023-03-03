@@ -2,7 +2,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor, HttpStatus 
 import { map, Observable } from 'rxjs';
 
 @Injectable()
-export default class FormatResponseInterceptor implements NestInterceptor {
+export default class HttpResponseInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const code = context.switchToHttp().getResponse().statusCode || HttpStatus.OK;
 
