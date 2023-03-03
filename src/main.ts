@@ -18,6 +18,6 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(process.env.APP_PORT || 3000);
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  console.log(`Backend server running on: ${await app.getUrl()}`);
 }
 bootstrap();
