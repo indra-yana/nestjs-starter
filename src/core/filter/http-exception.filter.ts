@@ -9,7 +9,7 @@ import ClientException from '../exceptions/ClientException';
 import ServerException from '../exceptions/ServerException';
 
 // @Catch(HttpException) // No need, because this use generic type exception
-export class HttpExceptionFilter<T> implements ExceptionFilter {
+export default class HttpExceptionFilter<T> implements ExceptionFilter {
   catch(exception: T, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();

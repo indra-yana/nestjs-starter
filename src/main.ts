@@ -1,9 +1,9 @@
-import { VersioningType } from '@nestjs/common';
+import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
-import { AppModule } from './app.module';
-import { HttpExceptionFilter } from './core/filter/http-exception.filter';
+import { VersioningType } from '@nestjs/common';
 import FormatResponseInterceptor from './core/interceptor/format-response.interceptor';
+import HttpExceptionFilter from './core/filter/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
