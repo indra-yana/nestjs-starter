@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { RegisterService } from './register.service';
 import { RegisterController } from './register.controller';
-import { LocaleService } from '../../../core/common/service/locale.service';
+import { RegisterService } from './register.service';
 
 @Module({
-  providers: [RegisterService, LocaleService],
+  providers: [RegisterService],
   controllers: [RegisterController]
 })
-export class RegisterModule {}
+export class RegisterModule { }
