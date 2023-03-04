@@ -1,21 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { LocaleService } from 'src/core/common/service/locale.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class RegisterService {
-    private readonly users: Array<object> = [];
-
     constructor(
-        private localeService: LocaleService,
+        private userService: UserService,
+        private locale: LocaleService,
     ) { }
 
-    register(body: object) {
-        this.users.push(body);
+    async register(body: object) {
+        this.userService.create(body);
 
-        return this.localeService.t('app.auth.register_success');
+        return this.locale.t('app.auth.register_success');
     }
 
-    findAll() {
-        return this.users;
-    }
 }

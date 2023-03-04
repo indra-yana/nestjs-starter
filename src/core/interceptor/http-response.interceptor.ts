@@ -13,7 +13,7 @@ export default class HttpResponseInterceptor implements NestInterceptor {
                 value = (value) ? value : null
                 return {
                     code,
-                    message: value.message || locale.t('app.message.success'),
+                    message: value?.message || locale.t('app.message.success'),
                     data: value
                 };
             }));

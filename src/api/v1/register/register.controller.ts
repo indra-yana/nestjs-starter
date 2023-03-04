@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, HttpCode } from '@nestjs/common';
+import { Body, Controller, Post, Get } from '@nestjs/common';
 import { RegisterService } from './register.service';
 
 @Controller({
@@ -6,6 +6,7 @@ import { RegisterService } from './register.service';
     version: '1',
 })
 export class RegisterController {
+
     constructor(
         private registerService: RegisterService,
     ) { }
@@ -14,15 +15,6 @@ export class RegisterController {
     async register(@Body() body: object) {
         try {
             return this.registerService.register(body);
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    @Get('find-all')
-    async findAll() {
-        try {
-            return this.registerService.findAll();
         } catch (error) {
             throw error;
         }
