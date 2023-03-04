@@ -26,7 +26,11 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/platform-fastify": "^9.3.9",
+    "bcrypt": "^5.1.0",
+    "joi": "^17.8.3",
+    "nanoid": "^4.0.1",
     "nestjs-i18n": "^10.2.6",
+    "nodemailer": "^6.9.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
