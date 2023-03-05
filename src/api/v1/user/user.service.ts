@@ -1,37 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { nanoid } from 'nanoid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { LocaleService } from 'src/core/common/service/locale.service';
+import { Repository } from 'typeorm';
+import { User } from 'src/core/common/database/typeorm/entities/user.entity';
+import NotFoundException from 'src/core/exceptions/NotFoundException';
 
 @Injectable()
 export class UserService {
-    private readonly users: Array<any>;
-
-    constructor() {
-        this.users = [
-            {
-                userId: 1,
-                username: 'john',
-                password: 'changeme',
-            },
-            {
-                userId: 2,
-                username: 'chris',
-                password: 'secret',
-            },
-            {
-                userId: 3,
-                username: 'maria',
-                password: 'guess',
-            },
-        ];
-    }
+    constructor(
+        @InjectRepository(User)
+        private usersRepository: Repository<User>,
+        private locale: LocaleService
+    ) { }
 
     async create(user: any) {
-        user['userId'] = nanoid(16);
-        this.users.push(user);
-
-        return {
-            userId: user.userId,
-        };
+        // TODO
     }
 
     async update(user: any) {
@@ -43,11 +26,23 @@ export class UserService {
     }
 
     async find(userId: string) {
-        return this.users.find(user => user.userId == userId);
+        const result = await this.usersRepository.findOne({
+            where: {
+                id: userId,
+            }
+        });
+
+        if (!result) {
+            throw new NotFoundException({
+                message: this.locale.t('app.message.data_notfound'),
+            });
+        }
+
+        return result;
     }
 
     async all() {
-        return this.users;
+        return await this.usersRepository.find();
     }
 
 }

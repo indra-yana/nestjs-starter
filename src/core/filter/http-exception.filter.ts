@@ -19,6 +19,10 @@ export default class HttpExceptionFilter<T> implements ExceptionFilter {
     let message: string = '';
     let detail: any = null;
 
+    if (exception instanceof Error) {
+      message = exception.message;
+    }
+    
     if (exception instanceof HttpException) {
       code = exception.getStatus();
       message = exception.message;
