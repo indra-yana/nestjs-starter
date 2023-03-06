@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor, HttpStatus } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import { LocaleService } from '../common/service/locale.service';
+import { LocaleService } from '../common/locale/locale.service';
 
 @Injectable()
 export default class HttpResponseInterceptor implements NestInterceptor {

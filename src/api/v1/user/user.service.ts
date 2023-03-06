@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LocaleService } from 'src/core/common/service/locale.service';
+import { LocaleService } from 'src/core/common/locale/locale.service';
 import { Repository } from 'typeorm';
 import { User } from 'src/core/common/database/typeorm/entities/user';
 import NotFoundException from 'src/core/exceptions/NotFoundException';

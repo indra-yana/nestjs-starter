@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LocaleService } from 'src/core/common/service/locale.service';
+import { LocaleService } from 'src/core/common/locale/locale.service';
 import { UserService } from '../user/user.service';
 
 @Injectable()
