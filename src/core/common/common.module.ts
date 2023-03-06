@@ -1,16 +1,11 @@
-import { ConfigService } from '@nestjs/config';
 import { Global, Module } from '@nestjs/common';
 import { LocaleService } from './service/locale.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmPGConfigService } from './service/typeorm.pg.service';
+import { TypeOrmDatabaseModule } from './database/typeorm/typeorm.module';
 
 @Global()
 @Module({
     imports: [
-        TypeOrmModule.forRootAsync({
-            useClass: TypeOrmPGConfigService,
-            inject: [ConfigService],
-        }),
+        TypeOrmDatabaseModule
     ],
     providers: [LocaleService],
     exports: [LocaleService]
