@@ -41,6 +41,22 @@ export class UserService {
         return result;
     }
 
+    async findWithCredential(credential: object) {
+        const key = credential['username'] ? 'username' : 'email';        
+        const result = await this.usersRepository.findOne({
+            where: {
+                [key]: credential[key],
+            },
+            select: {
+                id: true,
+                username: true,
+                password: true,
+            },
+        });
+
+        return result;
+    }
+
     async all() {
         return await this.usersRepository.find();
     }

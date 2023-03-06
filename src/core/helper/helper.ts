@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
-export function joiValidationFormat(errors) {
+export function joiValidationFormat(errors: any): any {
     const errorKey = {};
     errors.map((error) => {
         // const field = error.path.join('_');
