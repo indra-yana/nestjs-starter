@@ -4,7 +4,7 @@ import { LocaleService } from 'src/core/common/locale/locale.service';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt'; 
 import validateEmail from 'filter-validate-email';
-import ValidationException from 'src/core/exceptions/ValidationException';
+import AuthenticationException from 'src/core/exceptions/AuthenticationException';
 
 @Injectable()
 export class LoginService {
@@ -26,7 +26,7 @@ export class LoginService {
         const result = await this.userService.findWithCredential(credentials);
 
         if (!result) {
-            throw new ValidationException({
+            throw new AuthenticationException({
                 message: this.locale.t('app.auth.login_failed'),
                 error: joiValidationFormat([
                     {
@@ -40,7 +40,7 @@ export class LoginService {
         const hashedPassword = result.password;
         const match = await bcrypt.compare(password, hashedPassword);
         if (!match) {
-            throw new ValidationException({
+            throw new AuthenticationException({
                 message: this.locale.t('app.auth.login_failed'),
                 error: joiValidationFormat([
                     {
