@@ -1,11 +1,11 @@
-import { LocalStrategyService } from 'src/core/common/auth/local.strategy.service';
+import { LocalStrategyService } from 'src/core/common/auth/strategies/local.strategy.service';
 import { LoginController } from './login.controller';
 import { LoginService } from './login.service';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
-import { JWTStrategyService } from 'src/core/common/auth/jwt.strategy.service';
+import { JWTStrategyService } from 'src/core/common/auth/strategies/jwt.strategy.service';
 import 'dotenv/config';
 
 @Module({
