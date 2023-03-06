@@ -64,16 +64,26 @@ export class LoginService {
     }
 
     async jwtAuth(user: any) {
-        console.log(user);
-        
         const payload = { 
-            _uid: user.id, 
+            _uid: user._uid, 
             username: user.username, 
             email: user.email 
         }
 
         return {
-          access_token: this.jwtService.sign(payload),
+            token: {
+                accessToken: this.jwtService.sign(payload),
+                // refreshToken: null,
+            }
         }
-      }
+    }
+
+    verifyJwt(token: string) {
+        try {
+            const user = this.jwtService.verify(token);            
+            return user;
+        } catch (error) {
+            return null;
+        }
+    }
 }

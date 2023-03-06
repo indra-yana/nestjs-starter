@@ -6,14 +6,17 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JWTStrategyService } from 'src/core/common/auth/jwt.strategy.service';
+import 'dotenv/config';
 
 @Module({
   imports: [
     UserModule, 
     PassportModule, 
     JwtModule.register({
-      secret: process.env.ACCESS_TOKEN_KEY || 'secret_key',
-      signOptions: { expiresIn: process.env.ACCESS_TOKEN_AGE || '60s' },
+      secret: process.env.ACCESS_TOKEN_KEY,
+      signOptions: { 
+        expiresIn: process.env.ACCESS_TOKEN_AGE
+      },
     })
   ],
   exports: [LoginService],
