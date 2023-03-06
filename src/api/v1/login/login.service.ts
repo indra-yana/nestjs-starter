@@ -5,11 +5,16 @@ import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt'; 
 import AuthenticationException from 'src/core/exceptions/AuthenticationException';
 import validateEmail from 'filter-validate-email';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class LoginService {
 
-    constructor(private userService: UserService, private locale: LocaleService){ }
+    constructor(
+        private userService: UserService, 
+        private jwtService: JwtService, 
+        private locale: LocaleService
+    ){ }
 
     credentialField(value: string): string {
         return validateEmail(value, false) ? 'email' : 'username';
@@ -21,7 +26,7 @@ export class LoginService {
         };
     }
 
-    async basicLogin(credential: string, password: string) {
+    async basicAuth(credential: string, password: string) {
         const credentials = this.getCredentials(credential);        
         const result = await this.userService.findWithCredential(credentials);
 
@@ -57,4 +62,18 @@ export class LoginService {
             email: result.email,
         }
     }
+
+    async jwtAuth(user: any) {
+        console.log(user);
+        
+        const payload = { 
+            _uid: user.id, 
+            username: user.username, 
+            email: user.email 
+        }
+
+        return {
+          access_token: this.jwtService.sign(payload),
+        }
+      }
 }
