@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/core/common/auth/jwt-auth.guard';
 import { UserService } from './user.service';
 
 @Controller({
@@ -8,6 +9,7 @@ import { UserService } from './user.service';
 export class UserController {
     constructor(private userService: UserService) { }
 
+    @UseGuards(JwtAuthGuard)
     @Post('create')
     async create(@Body() body: object) {
         try {
@@ -18,6 +20,7 @@ export class UserController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete('delete')
     async delete(@Body('id') id: string) {
         try {
@@ -28,6 +31,7 @@ export class UserController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put('update')
     async update(@Body() body: object) {
         try {
@@ -38,6 +42,7 @@ export class UserController {
         }
     }
 
+	@UseGuards(JwtAuthGuard)
     @Get('list')
     async all() {
         try {
@@ -48,6 +53,7 @@ export class UserController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('show/:id')
     async show(@Param('id') id: string) {
         try {
