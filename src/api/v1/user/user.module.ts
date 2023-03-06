@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { JwtModule } from '@nestjs/jwt';
 import { JWTStrategyService } from 'src/core/common/auth/strategies/jwt.strategy.service';
 import { LocalStrategyService } from 'src/core/common/auth/strategies/local.strategy.service';
-import { LoginService } from '../login/login.service';
+import { AuthService } from '../../../core/common/auth/auth.service';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -21,7 +21,7 @@ import { UserService } from './user.service';
             },
         })
     ],
-    providers: [UserService, LoginService, LocalStrategyService, JWTStrategyService],
+    providers: [UserService, AuthService, LocalStrategyService, JWTStrategyService],
     controllers: [UserController],
     exports: [UserService],
 })

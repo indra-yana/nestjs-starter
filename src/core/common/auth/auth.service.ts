@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { joiValidationFormat } from 'src/core/helper/helper';
 import { LocaleService } from 'src/core/common/locale/locale.service';
-import { UserService } from '../user/user.service';
+import { UserService } from '../../../api/v1/user/user.service';
 import * as bcrypt from 'bcrypt'; 
 import AuthenticationException from 'src/core/exceptions/AuthenticationException';
 import validateEmail from 'filter-validate-email';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class LoginService {
+export class AuthService {
 
     constructor(
         private userService: UserService, 

@@ -2,13 +2,13 @@ import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { LoginService } from 'src/api/v1/login/login.service';
+import { AuthService } from 'src/core/common/auth/auth.service';
 import { IS_PUBLIC_KEY } from 'src/core/decorator/public-route.decorator';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt_auth') {
 
-    constructor(private loginService: LoginService, private reflector: Reflector) {
+    constructor(private authService: AuthService, private reflector: Reflector) {
         super();
     }
 
@@ -27,7 +27,7 @@ export class JwtAuthGuard extends AuthGuard('jwt_auth') {
             const auth = request.headers['authorization'];
             const token = auth.split(' ')[1];
     
-            const user = this.loginService.verifyJwt(token);
+            const user = this.authService.verifyJwt(token);
             if (user) {
                 request['user'] = user;
                 return true;

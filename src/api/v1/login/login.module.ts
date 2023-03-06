@@ -1,6 +1,6 @@
 import { LocalStrategyService } from 'src/core/common/auth/strategies/local.strategy.service';
 import { LoginController } from './login.controller';
-import { LoginService } from './login.service';
+import { AuthService } from '../../../core/common/auth/auth.service';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '../user/user.module';
@@ -19,8 +19,8 @@ import 'dotenv/config';
       },
     })
   ],
-  exports: [LoginService],
-  providers: [LoginService, LocalStrategyService, JWTStrategyService],
+  exports: [AuthService],
+  providers: [AuthService, LocalStrategyService, JWTStrategyService],
   controllers: [LoginController]
 })
 export class LoginModule {}
