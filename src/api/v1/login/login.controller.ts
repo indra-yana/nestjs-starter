@@ -21,7 +21,6 @@ export class LoginController {
         }
     }
 	
-	@UseGuards(JwtAuthGuard)
     @Get('whoami')
     async whoami(@Request() request: any) {
         try {			
