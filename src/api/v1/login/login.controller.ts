@@ -1,20 +1,19 @@
-import { Body, HttpCode, Post } from '@nestjs/common/decorators';
-import { Controller } from '@nestjs/common';
-import { LoginService } from './login.service';
+import { Controller, Body, HttpCode, Post, UseGuards, Request } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller({
     path: 'auth',
     version: '1'
 })
 export class LoginController {
-    constructor(private loginService: LoginService) { }
+    constructor() { }
 
+	@UseGuards(AuthGuard('basic_auth'))
     @HttpCode(200)
     @Post('login')
-    async login(@Body() body: object) {
-        try {
-			// TODO: Handle validation
-            return this.loginService.basicLogin(body['credential'], body['password'])
+    async login(@Request() request: any) {
+        try {			
+            return request.user;
         } catch (error) {
             throw error;
         }

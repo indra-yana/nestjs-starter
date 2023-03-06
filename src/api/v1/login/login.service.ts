@@ -3,8 +3,8 @@ import { joiValidationFormat } from 'src/core/helper/helper';
 import { LocaleService } from 'src/core/common/locale/locale.service';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt'; 
-import validateEmail from 'filter-validate-email';
 import AuthenticationException from 'src/core/exceptions/AuthenticationException';
+import validateEmail from 'filter-validate-email';
 
 @Injectable()
 export class LoginService {
@@ -53,6 +53,8 @@ export class LoginService {
 
         return {
             _uid: result.id,
+            username: result.username,
+            email: result.email,
         }
     }
 }
