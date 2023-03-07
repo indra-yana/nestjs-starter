@@ -25,7 +25,7 @@ export class LoginController {
     @Get('whoami')
     async whoami(@Request() request: any) {
         try {			
-            return request.user;
+            return await this.authService.whoami(request.user._uid);
         } catch (error) {
             throw error;
         }

@@ -28,6 +28,10 @@ export class AuthService {
         };
     }
 
+    async whoami(id: string) {        
+        return await this.userService.find(id);
+    }
+
     async basicAuth(credential: string, password: string) {
         const credentials = this.getCredentials(credential);        
         const result = await this.userService.findWithCredential(credentials);
