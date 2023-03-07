@@ -1,6 +1,6 @@
-import crypto from 'crypto';
-import fs from 'fs';
-import path from 'path';
+import * as crypto from 'crypto';
+import * as path from 'path';
+import * as fs from 'fs';
 
 export function joiValidationFormat(errors: any): any {
     const errorKey = {};

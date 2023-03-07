@@ -85,6 +85,20 @@ export class UserService {
 
         return result;
     }
+    
+    async findOneBy(key: string, value: any) {
+        const result = await this.usersRepository.findOneBy({
+            [key]: value
+        });
+
+        if (!result) {
+            throw new NotFoundException({
+                message: this.locale.t('app.message.data_notfound'),
+            });
+        }
+
+        return result;
+    }
 
     async findWithCredential(credential: object) {
         const key = credential['username'] ? 'username' : 'email';        
