@@ -113,7 +113,9 @@
         "string.uriRelativeOnly": "{{#label}} must be a valid relative uri",
         "string.uppercase": "{{#label}} must only contain uppercase characters",
         "symbol.base": "{{#label}} must be a symbol",
-        "symbol.map": "{{#label}} must be one of {{#map}}",
-        "unique": "{{attribute}} sudah tersedia sebelumnya."
+        "symbol.map": "{{#label}} must be one of {{#map}}"
+    },
+    "common": {
+        "unique": "{attribute} sudah tersedia sebelumnya."
     }
 }

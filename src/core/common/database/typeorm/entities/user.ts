@@ -11,8 +11,12 @@ import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class User {
-	
+
 	private readonly saltOrRounds = 5;
+
+	constructor(user: Partial<User>) {
+		Object.assign(this, user);
+	}
 
 	@PrimaryColumn()
 	id: string;
@@ -20,7 +24,9 @@ export class User {
 	@Column()
 	name: string;
 
-	@Column()
+	@Column({
+		unique: true,
+	})
 	username: string;
 
 	@Column({ select: false })

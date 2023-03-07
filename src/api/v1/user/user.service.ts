@@ -4,7 +4,8 @@ import { LocaleService } from 'src/core/common/locale/locale.service';
 import { Repository } from 'typeorm';
 import { User } from 'src/core/common/database/typeorm/entities/user';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
-import { isEmpty } from 'src/core/helper/helper';
+import ValidationException from 'src/core/exceptions/ValidationException';
+import { joiValidationFormat } from 'src/core/helper/helper';
 
 @Injectable()
 export class UserService {
@@ -17,20 +18,17 @@ export class UserService {
     async create(payload: any) {
         const { name, username, email, password, avatar = null } = payload;
 
-        // await this.checkIfUsernameOrEmailExists('username', username);
-        // await this.checkIfUsernameOrEmailExists('email', email);
+        await this.checkUsernameAndEmailExists(username, email);
 
-        const newUser = {
+        const newUser = new User({
             name,
             username,
             email,
             avatar,
             password,
-        };
+        })
 
-        const user = this.usersRepository.create(newUser);
-        const result = await this.usersRepository.save(user);
-
+        const result = await this.usersRepository.save(newUser);
         return {
             id: result.id
         }
@@ -88,6 +86,40 @@ export class UserService {
 
     async all() {
         return await this.usersRepository.find();
+    }
+
+    async checkUsernameAndEmailExists(username: string, email: string) {
+        const usernameExist = await this.usersRepository
+                            .createQueryBuilder()
+                            .where("username = :username", { username })
+                            .getExists();
+
+        const emailExist = await this.usersRepository
+                            .createQueryBuilder()
+                            .where("email = :email", { email })
+                            .getExists();
+
+        const validations = [];
+        if (usernameExist) {
+            validations.push({
+                path: ['username'],
+                message: this.locale.t('validation.common.unique', { args: { attribute: 'username' } }),
+            })
+        }
+
+        if (emailExist) {
+            validations.push({
+                path: ['email'],
+                message: this.locale.t('validation.common.unique', { args: { attribute: 'email' } }),
+            })
+        }
+
+        if (validations.length) {
+            throw new ValidationException({
+                message: this.locale.t('app.message.validation_fail'),
+                error: joiValidationFormat(validations),
+            });
+        }
     }
 
 }
