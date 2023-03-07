@@ -3,6 +3,7 @@ import { AppModule } from './main/app.module';
 import { JwtAuthGuard } from 'src/core/common/auth/guards/jwt.guard';
 import { LoginModule } from './login/login.module';
 import { Module } from '@nestjs/common';
+import { PasswordModule } from './password/password.module';
 import { RegisterModule } from './register/register.module';
 import { UserModule } from './user/user.module';
 
@@ -12,6 +13,7 @@ import { UserModule } from './user/user.module';
         UserModule,
         RegisterModule,
         LoginModule,
+        PasswordModule,
     ],
     providers: [
         {

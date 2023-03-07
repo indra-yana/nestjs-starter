@@ -6,6 +6,8 @@ import * as bcrypt from 'bcrypt';
 import AuthenticationException from 'src/core/exceptions/AuthenticationException';
 import validateEmail from 'filter-validate-email';
 import { JwtService } from '@nestjs/jwt';
+import NotFoundException from 'src/core/exceptions/NotFoundException';
+import ForbidenException from 'src/core/exceptions/ForbidenException';
 
 @Injectable()
 export class AuthService {
@@ -84,6 +86,26 @@ export class AuthService {
             return user;
         } catch (error) {
             return null;
+        }
+    }
+
+    async confirmPassword(id: string, password: string) {
+        const user = await this.userService.find(id, true);
+        if (!user) {
+            throw new NotFoundException({ message: this.locale.t('app.message.data_notfound')});
+        }
+        
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            throw new ForbidenException({
+                message: this.locale.t('app.password.incorrect'),
+                error: joiValidationFormat([
+                    {
+                        path: ['password'],
+                        message: this.locale.t('app.auth.password'),
+                    },
+                ]),
+            });
         }
     }
 }

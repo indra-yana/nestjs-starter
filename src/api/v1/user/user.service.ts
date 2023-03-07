@@ -25,10 +25,19 @@ export class UserService {
         // TODO
     }
 
-    async find(userId: string) {
+    async find(userId: string, password: boolean = false) {
         const result = await this.usersRepository.findOne({
             where: {
                 id: userId,
+            },
+            select: {
+                id: true,
+                name: true, 
+                username: true, 
+                password, 
+                email: true,
+                created_at: true, 
+                updated_at: true,
             }
         });
 
