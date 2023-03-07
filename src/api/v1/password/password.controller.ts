@@ -32,4 +32,13 @@ export class PasswordController {
             throw error;
         }
     }
+
+    @Post('reset')
+    async resetPassword(@Body() payload: any) {
+        try {
+            return await this.forgotPasswordService.resetPassword(payload);
+        } catch (error) {
+            throw error;
+        }
+    }
 }

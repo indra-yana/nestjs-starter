@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { joiValidationFormat } from 'src/core/helper/helper';
 import { LocaleService } from 'src/core/common/locale/locale.service';
 import { Repository } from 'typeorm';
 import { User } from 'src/core/common/database/typeorm/entities/user';
+import * as bcrypt from 'bcrypt';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import ValidationException from 'src/core/exceptions/ValidationException';
-import { joiValidationFormat } from 'src/core/helper/helper';
 
 @Injectable()
 export class UserService {
@@ -119,6 +120,15 @@ export class UserService {
 
     async all() {
         return await this.usersRepository.find();
+    }
+
+    async updatePassword(id: string, password: any) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const result = await this.usersRepository.update(id, {
+            password: hashedPassword,
+        })
+
+        return result.affected !== 0;
     }
 
     async checkUsernameOrEmailExists(username: string, email: string) {
