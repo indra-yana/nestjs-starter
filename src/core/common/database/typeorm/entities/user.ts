@@ -1,35 +1,52 @@
 import { nanoid } from 'nanoid';
-import { Entity, Column, PrimaryColumn, BeforeInsert, UpdateDateColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  BeforeInsert,
+  UpdateDateColumn,
+  CreateDateColumn,
+} from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class User {
-  @PrimaryColumn()
-  id: string;
+	
+	private readonly saltOrRounds = 5;
 
-  @Column()
-  name: string;
+	@PrimaryColumn()
+	id: string;
 
-  @Column()
-  username: string;
+	@Column()
+	name: string;
 
-  @Column({ select: false })
-  password: string;
+	@Column()
+	username: string;
 
-  @Column()
-  email: string;
+	@Column({ select: false })
+	password: string;
 
-  @Column()
-  avatar: string;
+	@Column({
+		unique: true,
+	})
+	email: string;
 
-  @CreateDateColumn()
-  created_at: Date;
+	@Column()
+	avatar: string;
 
-  @UpdateDateColumn()
-  updated_at: Date;
+	@CreateDateColumn()
+	created_at: Date;
 
-  @BeforeInsert()
-  createId() {
-    this.id = nanoid(16);
-  }
+	@UpdateDateColumn()
+	updated_at: Date;
 
+	@BeforeInsert()
+	createId() {
+		this.id = nanoid(16);
+	}
+
+	@BeforeInsert()
+	hashPassword() {
+		this.password = bcrypt.hashSync(this.password, this.saltOrRounds);
+	}
 }

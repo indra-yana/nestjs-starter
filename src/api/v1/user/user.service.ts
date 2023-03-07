@@ -4,6 +4,7 @@ import { LocaleService } from 'src/core/common/locale/locale.service';
 import { Repository } from 'typeorm';
 import { User } from 'src/core/common/database/typeorm/entities/user';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
+import { isEmpty } from 'src/core/helper/helper';
 
 @Injectable()
 export class UserService {
@@ -13,8 +14,26 @@ export class UserService {
         private locale: LocaleService
     ) { }
 
-    async create(user: any) {
-        // TODO
+    async create(payload: any) {
+        const { name, username, email, password, avatar = null } = payload;
+
+        // await this.checkIfUsernameOrEmailExists('username', username);
+        // await this.checkIfUsernameOrEmailExists('email', email);
+
+        const newUser = {
+            name,
+            username,
+            email,
+            avatar,
+            password,
+        };
+
+        const user = this.usersRepository.create(newUser);
+        const result = await this.usersRepository.save(user);
+
+        return {
+            id: result.id
+        }
     }
 
     async update(user: any) {
