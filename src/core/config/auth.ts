@@ -9,12 +9,12 @@ export default registerAs('auth', () => ({
     },
 
     forgot_password: {
-        link_expire_minutes: +process.env.PASSWORD_LINK_EXPIRE || 60,
-        frontend_url: `${process.env.APP_FE_URL}/${process.env.APP_RESET_URL}`,
+        link_expire_minutes: +process.env.RESET_LINK_EXPIRE_MINUTES || 60,
+        frontend_url: `${process.env.FE_BASE_URL}/${process.env.APP_RESET_URL}`,
     },
 
     verify: {
-        link_expire_minutes: +process.env.VERIFY_LINK_EXPIRE || 60,
-        frontend_url: `${process.env.APP_FE_URL}/${process.env.APP_VERIFY_URL}`,
+        link_expire_minutes: +process.env.VERIFY_LINK_EXPIRE_MINUTES || 60,
+        frontend_url: `${process.env.FE_BASE_URL}/${process.env.APP_VERIFY_URL}`,
     }
 }));
