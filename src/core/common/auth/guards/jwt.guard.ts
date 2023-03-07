@@ -1,9 +1,9 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { FastifyRequest, FastifyReply } from 'fastify';
 import { AuthService } from 'src/core/common/auth/auth.service';
+import { ExecutionContext, Injectable } from '@nestjs/common';
+import { FastifyRequest } from 'fastify';
 import { IS_PUBLIC_KEY } from 'src/core/decorator/public-route.decorator';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt_auth') {

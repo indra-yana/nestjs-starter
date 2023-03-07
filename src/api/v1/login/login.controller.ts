@@ -1,5 +1,5 @@
 import { Controller, Body, HttpCode, Post, UseGuards, Request, Get } from '@nestjs/common';
-import { LocalAuthGuard } from 'src/core/common/auth/local-auth.guard';
+import { LocalAuthGuard } from 'src/core/common/auth/guards/local.guard';
 import { PublicRoute } from 'src/core/decorator/public-route.decorator';
 import { AuthService } from '../../../core/common/auth/auth.service';
 
@@ -10,8 +10,8 @@ import { AuthService } from '../../../core/common/auth/auth.service';
 export class LoginController {
     constructor(private authService: AuthService) { }
 
-    @PublicRoute()
 	@UseGuards(LocalAuthGuard)
+    @PublicRoute()
     @HttpCode(200)
     @Post('login')
     async login(@Request() request: any) {

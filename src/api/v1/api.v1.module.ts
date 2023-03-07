@@ -1,6 +1,6 @@
 import { APP_GUARD } from '@nestjs/core/constants';
 import { AppModule } from './main/app.module';
-import { JwtAuthGuard } from 'src/core/common/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/core/common/auth/guards/jwt.guard';
 import { LoginModule } from './login/login.module';
 import { Module } from '@nestjs/common';
 import { RegisterModule } from './register/register.module';
