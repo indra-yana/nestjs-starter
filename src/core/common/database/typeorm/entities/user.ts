@@ -11,9 +11,6 @@ import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class User {
-
-	private readonly saltOrRounds = 5;
-
 	constructor(user: Partial<User>) {
 		Object.assign(this, user);
 	}
@@ -53,6 +50,6 @@ export class User {
 
 	@BeforeInsert()
 	hashPassword() {
-		this.password = bcrypt.hashSync(this.password, this.saltOrRounds);
+		this.password = bcrypt.hashSync(this.password, 10);
 	}
 }

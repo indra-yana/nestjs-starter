@@ -16,9 +16,9 @@ export class UserService {
     ) { }
 
     async create(payload: any) {
-        const { name, username, email, password, avatar = null } = payload;
+        const { name, username, email, password, avatar } = payload;
 
-        await this.checkUsernameAndEmailExists(username, email);
+        await this.checkUsernameOrEmailExists(username, email);
 
         const newUser = new User({
             name,
@@ -34,8 +34,26 @@ export class UserService {
         }
     }
 
-    async update(user: any) {
-        // TODO
+    async update(payload: any) {
+        const { id, name, username, email, avatar } = payload;
+
+        await this.checkUniqueUsernameOrEmail(id, username, email);
+
+        const updatedUser = {
+            name,
+            username,
+            email,
+            avatar,
+        }
+
+        const result = await this.usersRepository.update(id, updatedUser);
+        if (result.affected === 0) {
+            throw new NotFoundException({
+                message: this.locale.t('app.message.data_notfound'),
+            });    
+        }
+
+        return await this.find(id);
     }
 
     async delete(id: string) {
@@ -89,7 +107,7 @@ export class UserService {
         return await this.usersRepository.find();
     }
 
-    async checkUsernameAndEmailExists(username: string, email: string) {
+    async checkUsernameOrEmailExists(username: string, email: string) {
         const usernameExist = await this.usersRepository
                             .createQueryBuilder()
                             .where("username = :username", { username })
@@ -98,6 +116,42 @@ export class UserService {
         const emailExist = await this.usersRepository
                             .createQueryBuilder()
                             .where("email = :email", { email })
+                            .getExists();
+
+        const validations = [];
+        if (usernameExist) {
+            validations.push({
+                path: ['username'],
+                message: this.locale.t('validation.common.unique', { args: { attribute: 'username' } }),
+            })
+        }
+
+        if (emailExist) {
+            validations.push({
+                path: ['email'],
+                message: this.locale.t('validation.common.unique', { args: { attribute: 'email' } }),
+            })
+        }
+
+        if (validations.length) {
+            throw new ValidationException({
+                message: this.locale.t('app.message.validation_fail'),
+                error: joiValidationFormat(validations),
+            });
+        }
+    }
+
+    async checkUniqueUsernameOrEmail(id: string, username: string, email: string) {
+        const usernameExist = await this.usersRepository
+                            .createQueryBuilder()
+                            .where("username = :username", { username })
+                            .andWhere("id != :id", { id })
+                            .getExists();
+        
+        const emailExist = await this.usersRepository
+                            .createQueryBuilder()
+                            .where("email = :email", { email })
+                            .andWhere("id != :id", { id })
                             .getExists();
 
         const validations = [];
