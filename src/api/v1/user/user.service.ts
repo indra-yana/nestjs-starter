@@ -39,7 +39,8 @@ export class UserService {
     }
 
     async delete(id: string) {
-        // TODO
+        const result = await this.usersRepository.delete(id);        
+        return result.affected !== 0;
     }
 
     async find(userId: string, password: boolean = false) {
