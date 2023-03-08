@@ -44,7 +44,7 @@ export class User {
 	@UpdateDateColumn()
 	updated_at: Date;
 
-	@DeleteDateColumn()
+	@DeleteDateColumn({ select: false })
 	deleted_at: Date;
 
 	@Column({ default: null })
