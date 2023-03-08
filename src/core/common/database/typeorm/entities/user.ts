@@ -6,13 +6,14 @@ import {
   BeforeInsert,
   UpdateDateColumn,
   CreateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class User {
-	constructor(user: Partial<User>) {
-		Object.assign(this, user);
+	constructor(params: Partial<User>) {
+		Object.assign(this, params);
 	}
 
 	@PrimaryColumn()
@@ -42,6 +43,9 @@ export class User {
 
 	@UpdateDateColumn()
 	updated_at: Date;
+
+	@DeleteDateColumn()
+	deleted_at: Date;
 
 	@Column({ default: null })
 	email_verified_at: Date;

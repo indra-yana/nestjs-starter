@@ -5,6 +5,7 @@ import { LoginModule } from './login/login.module';
 import { Module } from '@nestjs/common';
 import { PasswordModule } from './password/password.module';
 import { RegisterModule } from './register/register.module';
+import { RoleModule } from './role/role.module';
 import { UserModule } from './user/user.module';
 import { VerifyModule } from './verify/verify.module';
 
@@ -16,6 +17,7 @@ import { VerifyModule } from './verify/verify.module';
         LoginModule,
         PasswordModule,
         VerifyModule,
+        RoleModule,
     ],
     providers: [
         {
