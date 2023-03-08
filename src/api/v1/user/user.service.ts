@@ -163,14 +163,14 @@ export class UserService {
         if (usernameExist) {
             validations.push({
                 path: ['username'],
-                message: this.locale.t('validation.common.unique', { args: { attribute: 'username' } }),
+                message: this.locale.t('validation.common.unique', { attribute: 'username' }),
             })
         }
 
         if (emailExist) {
             validations.push({
                 path: ['email'],
-                message: this.locale.t('validation.common.unique', { args: { attribute: 'email' } }),
+                message: this.locale.t('validation.common.unique', { attribute: 'email' }),
             })
         }
 
@@ -199,14 +199,14 @@ export class UserService {
         if (usernameExist) {
             validations.push({
                 path: ['username'],
-                message: this.locale.t('validation.common.unique', { args: { attribute: 'username' } }),
+                message: this.locale.t('validation.common.unique', { attribute: 'username' }),
             })
         }
 
         if (emailExist) {
             validations.push({
                 path: ['email'],
-                message: this.locale.t('validation.common.unique', { args: { attribute: 'email' } }),
+                message: this.locale.t('validation.common.unique', { attribute: 'email' }),
             })
         }
 

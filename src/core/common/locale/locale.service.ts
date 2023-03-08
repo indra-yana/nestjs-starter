@@ -3,8 +3,14 @@ import { I18nContext, TranslateOptions } from 'nestjs-i18n';
 
 @Injectable()
 export class LocaleService {
-    t(key: string, options?: TranslateOptions) : string {
+    t(key: string, options?: any) : string {
         const i18n = I18nContext.current();
-        return i18n.t(key, options);
+        let opts: TranslateOptions = {
+            args: {
+                ...options
+            }
+        }
+
+        return i18n.t(key, opts);
     }
 }

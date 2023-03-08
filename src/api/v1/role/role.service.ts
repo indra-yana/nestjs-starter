@@ -91,7 +91,7 @@ export class RoleService {
         if (nameExist) {
             validations.push({
                 path: ['name'],
-                message: this.locale.t('validation.common.unique', { args: { attribute: 'name' } }),
+                message: this.locale.t('validation.common.unique', { attribute: 'name' }),
             })
         }
 
@@ -114,7 +114,7 @@ export class RoleService {
         if (nameExist) {
             validations.push({
                 path: ['name'],
-                message: this.locale.t('validation.common.unique', { args: { attribute: 'name' } }),
+                message: this.locale.t('validation.common.unique', { attribute: 'name' }),
             })
         }
 

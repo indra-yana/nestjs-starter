@@ -33,18 +33,16 @@ export class MailerService {
     }
 
     async sendWelcomeEmail(email: string, params: any) {
-        const trans = {
-            args: { 
-                name: params.name || 'User', 
-            }
+        const args = {
+            name: params.name || 'User', 
         }
 
         await this.mailerService.sendMail({
             to: email,
-            subject: this.localeService.t('app.verify.welcome', trans), 
+            subject: this.localeService.t('app.verify.welcome', args), 
             template: 'welcome',
             context: {
-                trans,
+                args,
             }
         });
     }
