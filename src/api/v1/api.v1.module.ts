@@ -6,6 +6,7 @@ import { Module } from '@nestjs/common';
 import { PasswordModule } from './password/password.module';
 import { RegisterModule } from './register/register.module';
 import { UserModule } from './user/user.module';
+import { VerifyModule } from './verify/verify.module';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { UserModule } from './user/user.module';
         RegisterModule,
         LoginModule,
         PasswordModule,
+        VerifyModule,
     ],
     providers: [
         {

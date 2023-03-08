@@ -36,18 +36,29 @@ export class AuthService {
     }
 
     async generateLink(email: string, type: LINK_TYPE) {
-        await this.userService.findOneBy('email', email);
+        const user = await this.userService.findOneBy('email', email);
         
         const expires = new Date();
         let feURL = '';
         let expireMinutes = 0;
+        let message = '';
 
         if (type == LINK_TYPE.FORGOT_PASSWORD) {
             expireMinutes = expires.getMinutes() + this.configService.get('auth.forgot_password.link_expire_minutes');
             feURL = this.configService.get('auth.forgot_password.frontend_url');
+            message = this.locale.t('app.password.sent');
         } else if (type == LINK_TYPE.VERIFY) {
+            if (user.email_verified_at !== null) {
+                return { 
+                    message: this.locale.t('app.auth.email_verified'),
+                    email_verified_at: user.email_verified_at,
+                    url: null,
+                }
+            }
+
             expireMinutes = expires.getMinutes() + this.configService.get('auth.verify.link_expire_minutes');
             feURL = this.configService.get('auth.verify.frontend_url');
+            message = this.locale.t('app.verify.sent');
         } else {
             throw new InvariantException({ message: 'Invalid reset link type!' });
         }
@@ -57,11 +68,14 @@ export class AuthService {
         const token = `${expiresMs}#${createToken(email, expiresMs)}`;        
         const encodedToken = encodeURIComponent(token);
         const encodedEmail = encodeURIComponent(email);
-        
-        const link = `${feURL}/${encodedToken}?email=${encodedEmail}`;
-        
+
+        const url = `${feURL}/${encodedToken}?email=${encodedEmail}`;
+
         // TODO: Save token to database
-        return link;
+        return {
+            message,
+            url
+        };
     }
 
     async whoami(id: string) {        

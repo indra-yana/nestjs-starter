@@ -43,6 +43,9 @@ export class User {
 	@UpdateDateColumn()
 	updated_at: Date;
 
+	@Column({ default: null })
+	email_verified_at: Date;
+
 	@BeforeInsert()
 	createId() {
 		this.id = nanoid(16);

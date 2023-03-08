@@ -10,10 +10,15 @@ export default class HttpResponseInterceptor implements NestInterceptor {
 
         return next.handle().pipe(
             map((value) => {
-                // value = value ? value : null
+                value = value !== undefined ? value : null
+                let message = value?.message || locale.t('app.message.success');
+                if (value) {
+                    delete value.message;
+                } 
+
                 return {
                     code,
-                    message: value?.message || locale.t('app.message.success'),
+                    message,
                     data: value
                 };
             }));
