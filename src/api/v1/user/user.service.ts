@@ -7,6 +7,7 @@ import { User } from 'src/core/common/database/typeorm/entities/user';
 import * as bcrypt from 'bcrypt';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import ValidationException from 'src/core/exceptions/ValidationException';
+import InvariantException from 'src/core/exceptions/InvariantException';
 
 @Injectable()
 export class UserService {
@@ -49,8 +50,8 @@ export class UserService {
 
         const result = await this.usersRepository.update(id, updatedUser);
         if (result.affected === 0) {
-            throw new NotFoundException({
-                message: this.locale.t('app.message.data_notfound'),
+            throw new InvariantException({
+                message: this.locale.t('app.message.updated_fail'),
             });    
         }
 
@@ -75,6 +76,7 @@ export class UserService {
                 email: true,
                 created_at: true, 
                 updated_at: true,
+                email_verified_at: true,
             }
         });
 
@@ -120,6 +122,21 @@ export class UserService {
 
     async all() {
         return await this.usersRepository.find();
+    }
+
+    async patchOneBy(id: string, key: string, value: any) {
+        const updatedUser = {
+            [key]: value,
+        }
+
+        const result = await this.usersRepository.update(id, updatedUser);
+        if (result.affected === 0) {
+            throw new InvariantException({
+                message: this.locale.t('app.message.updated_fail'),
+            });    
+        }
+
+        return await this.find(id);
     }
 
     async updatePassword(id: string, password: any) {

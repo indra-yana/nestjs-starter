@@ -1,5 +1,6 @@
-import { Controller, Post, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { AuthService, LINK_TYPE } from 'src/core/common/auth/auth.service';
+import { VerifyService } from './verify.service';
 
 @Controller({
     path: 'auth/verify',
@@ -7,7 +8,8 @@ import { AuthService, LINK_TYPE } from 'src/core/common/auth/auth.service';
 })
 export class VerifyController {
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private verifyService: VerifyService,
     ) { }
 
     @Post('resend')
@@ -24,7 +26,19 @@ export class VerifyController {
 
             return link;
         } catch (error) {
-            
+            throw error;
+        }
+    }
+
+    @Get(':email/:token')
+    async verifyAccount(@Param('email') email: string, @Param('token') token: string) {
+        try {
+            const result = await this.verifyService.verify({ email, token });
+            // TODO: Send welcome email to user after verified
+
+            return result;
+        } catch (error) {
+            throw error;
         }
     }
 }
