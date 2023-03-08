@@ -44,8 +44,8 @@ export class AuthService {
         let message = '';
 
         if (type == LINK_TYPE.FORGOT_PASSWORD) {
-            expireMinutes = expires.getMinutes() + this.configService.get('auth.forgot_password.link_expire_minutes');
-            feURL = this.configService.get('auth.forgot_password.frontend_url');
+            expireMinutes = expires.getMinutes() + this.configService.get('email.forgot_password.link_expire_minutes');
+            feURL = this.configService.get('email.forgot_password.frontend_url');
             message = this.locale.t('app.password.sent');
         } else if (type == LINK_TYPE.VERIFY) {
             if (user.email_verified_at !== null) {
@@ -56,8 +56,8 @@ export class AuthService {
                 }
             }
 
-            expireMinutes = expires.getMinutes() + this.configService.get('auth.verify.link_expire_minutes');
-            feURL = this.configService.get('auth.verify.frontend_url');
+            expireMinutes = expires.getMinutes() + this.configService.get('email.verify.link_expire_minutes');
+            feURL = this.configService.get('email.verify.frontend_url');
             message = this.locale.t('app.verify.sent');
         } else {
             throw new InvariantException({ message: 'Invalid reset link type!' });

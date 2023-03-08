@@ -12,4 +12,14 @@ export default registerAs('email', () => ({
     name: process.env.MAIL_FROM_NAME,
 
     template_dir: join(__dirname, '../resources/views/email/'),
+
+    forgot_password: {
+        link_expire_minutes: +process.env.RESET_LINK_EXPIRE_MINUTES || 60,
+        frontend_url: `${process.env.FE_RESET_URL}`,
+    },
+
+    verify: {
+        link_expire_minutes: +process.env.VERIFY_LINK_EXPIRE_MINUTES || 60,
+        frontend_url: `${process.env.FE_VERIFY_URL}`,
+    }
 }));
