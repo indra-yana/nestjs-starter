@@ -53,7 +53,7 @@
 		"equal_current_password": "{attribute} tidak cocok dengan kata sandi anda saat ini."
 	},
 	"verify": {
-		"Welcome": "Selamat datang {name} di sistem compsys!",
+		"welcome": "Selamat datang {name} di comsys!",
 		"verified": "Email berhasil diverifikasi!",
 		"sent": "Kami telah mengirim surel yang berisi tautan untuk memverifikasi akun. Silahkan periksa email Anda!",
 		"throttled": "Harap tunggu dalam {after} sebelum mencoba lagi.",

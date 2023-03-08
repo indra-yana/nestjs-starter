@@ -53,7 +53,7 @@
 		"equal_current_password": "The {attribute} does not match with your current password."
 	},
 	"verify": {
-		"Welcome": "Welcome {name} to compsys system!",
+		"welcome": "Welcome {name} to comsys!",
 		"verified": "The email successfully verified!",
 		"sent": "We have emailed a verification link. Please check your email!",
 		"throttled": "Please wait in {after} before retrying.",

@@ -8,6 +8,10 @@
       {
         "include": "core/resources/lang/**/*",
         "watchAssets": true
+      },
+      {
+        "include": "core/resources/views",
+        "watchAssets": true
       }
     ]
   }

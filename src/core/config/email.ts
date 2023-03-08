@@ -1,4 +1,5 @@
 import { registerAs } from "@nestjs/config";
+import { join } from "path";
 
 export default registerAs('email', () => ({
     driver: process.env.MAIL_MAILER,
@@ -9,4 +10,6 @@ export default registerAs('email', () => ({
     encryption: process.env.MAIL_ENCRYPTION,
     from: process.env.MAIL_FROM_ADDRESS,
     name: process.env.MAIL_FROM_NAME,
+
+    template_dir: join(__dirname, '../resources/views/email/'),
 }));

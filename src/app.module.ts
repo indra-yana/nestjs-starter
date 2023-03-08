@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { LocaleModule } from './core/common/locale/locale.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmDatabaseModule } from './core/common/database/typeorm/typeorm.module';
+import { MailerModule } from './core/common/mailer/mailer.module';
 import * as path from 'path';
 import app from './core/config/app';
 import auth from './core/config/auth';
@@ -17,6 +18,7 @@ import email from './core/config/email';
 		LocaleModule,
 		TypeOrmDatabaseModule,
 		AuthPassportModule,
+		MailerModule,
 		ApiV1Module,
 		ConfigModule,
 		ConfigModule.forRoot({

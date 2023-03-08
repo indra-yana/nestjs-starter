@@ -48,7 +48,9 @@ export class VerifyService {
         if (user.email_verified_at !== null) {
             return { 
                 message: this.locale.t('app.auth.email_verified'),
+                name: user.name,
                 email_verified_at: user.email_verified_at,
+                already_verify: true,
             }
         }
 
@@ -57,6 +59,8 @@ export class VerifyService {
         return {
             message: this.locale.t('app.verify.verified'),
             email_verified_at: result.email_verified_at,
+            name: result.name,
+            already_verify: false,
         };
     }
 
