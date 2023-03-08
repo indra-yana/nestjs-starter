@@ -10,11 +10,11 @@ export default registerAs('auth', () => ({
 
     forgot_password: {
         link_expire_minutes: +process.env.RESET_LINK_EXPIRE_MINUTES || 60,
-        frontend_url: `${process.env.FE_BASE_URL}/${process.env.APP_RESET_URL}`,
+        frontend_url: `${process.env.FE_RESET_URL}`,
     },
 
     verify: {
         link_expire_minutes: +process.env.VERIFY_LINK_EXPIRE_MINUTES || 60,
-        frontend_url: `${process.env.FE_BASE_URL}/${process.env.APP_VERIFY_URL}`,
+        frontend_url: `${process.env.FE_VERIFY_URL}`,
     }
 }));

@@ -14,7 +14,7 @@ export class MailerService {
         await this.nodeMailer.sendMail({
             to: email,
             subject: this.localeService.t('app.password.notification'), 
-            template: 'reset-password',
+            template: 'auth/reset-password', 
             context: {
                 url: params.url
             }
@@ -25,7 +25,7 @@ export class MailerService {
         await this.nodeMailer.sendMail({
             to: email,
             subject: this.localeService.t('app.verify.notification'), 
-            template: 'verify',
+            template: 'auth/verify',
             context: {
                 url: params.url
             }
@@ -40,7 +40,7 @@ export class MailerService {
         await this.nodeMailer.sendMail({
             to: email,
             subject: this.localeService.t('app.verify.welcome', args), 
-            template: 'welcome',
+            template: 'auth/welcome',
             context: {
                 args,
             }

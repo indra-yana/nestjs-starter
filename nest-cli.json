@@ -10,7 +10,7 @@
         "watchAssets": true
       },
       {
-        "include": "core/resources/views",
+        "include": "core/resources/views/email/**/*",
         "watchAssets": true
       }
     ]
