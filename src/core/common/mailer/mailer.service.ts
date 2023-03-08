@@ -6,12 +6,12 @@ import { LocaleService } from '../locale/locale.service';
 export class MailerService {
     
     constructor(
-        private mailerService: NodeMailerService,
+        private nodeMailer: NodeMailerService,
         private localeService: LocaleService,
     ) { }
 
     async sendForgotPasswordEmail(email: string, params: any) {
-        await this.mailerService.sendMail({
+        await this.nodeMailer.sendMail({
             to: email,
             subject: this.localeService.t('app.password.notification'), 
             template: 'reset-password',
@@ -22,7 +22,7 @@ export class MailerService {
     }
 
     async sendVerificationEmail(email: string, params: any) {
-        await this.mailerService.sendMail({
+        await this.nodeMailer.sendMail({
             to: email,
             subject: this.localeService.t('app.verify.notification'), 
             template: 'verify',
@@ -37,7 +37,7 @@ export class MailerService {
             name: params.name || 'User', 
         }
 
-        await this.mailerService.sendMail({
+        await this.nodeMailer.sendMail({
             to: email,
             subject: this.localeService.t('app.verify.welcome', args), 
             template: 'welcome',
