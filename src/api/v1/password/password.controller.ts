@@ -1,6 +1,6 @@
-import { AuthService } from '../../../core/common/auth/auth.service';
+import { AuthService, LINK_TYPE } from '../../../core/common/auth/auth.service';
 import { Controller, Body, Post, Request } from '@nestjs/common';
-import { ForgotPasswordService, LINK_TYPE } from './forgot-password.service';
+import { ForgotPasswordService } from './forgot-password.service';
 
 @Controller({
     path: 'auth/password',
@@ -24,7 +24,7 @@ export class PasswordController {
     @Post('email')
     async sendResetPasswordLink(@Body('email') email: string) {
         try {
-            const link = await this.forgotPasswordService.generateLink(email, LINK_TYPE.FORGOT_PASSWORD);
+            const link = await this.authService.generateLink(email, LINK_TYPE.FORGOT_PASSWORD);
             // TODO: Send email after link generated
 
             return link;

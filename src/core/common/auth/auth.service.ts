@@ -1,21 +1,28 @@
+import { ConfigService } from '@nestjs/config';
+import { createToken, joiValidationFormat } from 'src/core/helper/helper';
 import { Injectable } from '@nestjs/common';
-import { joiValidationFormat } from 'src/core/helper/helper';
+import { JwtService } from '@nestjs/jwt';
 import { LocaleService } from 'src/core/common/locale/locale.service';
 import { UserService } from '../../../api/v1/user/user.service';
 import * as bcrypt from 'bcrypt'; 
 import AuthenticationException from 'src/core/exceptions/AuthenticationException';
-import validateEmail from 'filter-validate-email';
-import { JwtService } from '@nestjs/jwt';
-import NotFoundException from 'src/core/exceptions/NotFoundException';
 import ForbidenException from 'src/core/exceptions/ForbidenException';
+import InvariantException from 'src/core/exceptions/InvariantException';
+import NotFoundException from 'src/core/exceptions/NotFoundException';
+import validateEmail from 'filter-validate-email';
+
+export enum LINK_TYPE {
+    FORGOT_PASSWORD = 1,
+    VERIFY = 2,
+}
 
 @Injectable()
 export class AuthService {
-
     constructor(
         private userService: UserService, 
         private jwtService: JwtService, 
-        private locale: LocaleService
+        private locale: LocaleService,
+        private configService: ConfigService,
     ){ }
 
     credentialField(value: string): string {
@@ -26,6 +33,35 @@ export class AuthService {
         return {
             [this.credentialField(credential)]: credential,
         };
+    }
+
+    async generateLink(email: string, type: LINK_TYPE) {
+        await this.userService.findOneBy('email', email);
+        
+        const expires = new Date();
+        let feURL = '';
+        let expireMinutes = 0;
+
+        if (type == LINK_TYPE.FORGOT_PASSWORD) {
+            expireMinutes = expires.getMinutes() + this.configService.get('auth.forgot_password.link_expire_minutes');
+            feURL = this.configService.get('auth.forgot_password.frontend_url');
+        } else if (type == LINK_TYPE.VERIFY) {
+            expireMinutes = expires.getMinutes() + this.configService.get('auth.verify.link_expire_minutes');
+            feURL = this.configService.get('auth.verify.frontend_url');
+        } else {
+            throw new InvariantException({ message: 'Invalid reset link type!' });
+        }
+        
+        expires.setMinutes(expireMinutes);
+        const expiresMs = expires.getTime();
+        const token = `${expiresMs}#${createToken(email, expiresMs)}`;        
+        const encodedToken = encodeURIComponent(token);
+        const encodedEmail = encodeURIComponent(email);
+        
+        const link = `${feURL}/${encodedToken}?email=${encodedEmail}`;
+        
+        // TODO: Save token to database
+        return link;
     }
 
     async whoami(id: string) {        
