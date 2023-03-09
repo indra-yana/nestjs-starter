@@ -13,4 +13,9 @@ export class LocaleService {
 
         return i18n.t(key, opts);
     }
+
+    getLang(): string {
+        const i18n = I18nContext.current();
+        return i18n.lang;
+    }
 }

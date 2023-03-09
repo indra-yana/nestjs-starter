@@ -1,16 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { createUserSchema } from './user.validator.schema';
 import { UserService } from './user.service';
+import { ValidatorService } from 'src/core/common/validator/validator.service';
 
 @Controller({
     path: 'user',
     version: '1',
 })
 export class UserController {
-    constructor(private userService: UserService) { }
+    constructor(
+        private userService: UserService,
+        private validator: ValidatorService
+    ) { }
 
     @Post('create')
     async create(@Body() body: object) {
         try {
+            this.validator.schema(createUserSchema).validate(body);
+
             const result = await this.userService.create(body);
             return result;
         } catch (error) {
