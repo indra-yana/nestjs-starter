@@ -6,11 +6,16 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "core/resources/lang/**/*",
+        "include": "core/resources/lang/**/*.json",
         "watchAssets": true
       },
       {
-        "include": "core/resources/views/email/**/*",
+        "include": "core/resources/views/email/**/*.hbs",
+        "watchAssets": true
+      },
+      {
+        "include": "../public/assets/**/*",
+        "outDir": "dist/public",
         "watchAssets": true
       }
     ]
