@@ -1,7 +1,9 @@
 # compiled output
 /dist
 /node_modules
-/uploads
+
+# ignore uploaded files
+/public/uploads
 
 # Dot env
 .env
