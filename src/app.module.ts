@@ -1,9 +1,11 @@
+import 'dotenv/config';
 import { ApiV1Module } from './api/v1/api.v1.module';
 import { AuthPassportModule } from './core/common/auth/auth.passport.module';
 import { ConfigModule } from '@nestjs/config';
 import { LocaleModule } from './core/common/locale/locale.module';
 import { MailerModule } from './core/common/mailer/mailer.module';
 import { Module } from '@nestjs/common';
+import { StorageModule } from './core/common/storage/storage.module';
 import { TypeOrmDatabaseModule } from './core/common/database/typeorm/typeorm.module';
 import { ValidatorModule } from './core/common/validator/validator.module';
 import app from './core/config/app';
@@ -19,6 +21,7 @@ import email from './core/config/email';
 		AuthPassportModule,
 		MailerModule,
 		ValidatorModule,
+		StorageModule,
 		ApiV1Module,
 		ConfigModule.forRoot({
 			isGlobal: true,

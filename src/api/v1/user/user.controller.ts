@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createUserSchema } from './user.validator.schema';
+import { FileInterceptor } from '@nest-lab/fastify-multer/src/lib/interceptors';
+import { StorageService } from 'src/core/common/storage/storage.service';
 import { UserService } from './user.service';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 
@@ -10,13 +12,25 @@ import { ValidatorService } from 'src/core/common/validator/validator.service';
 export class UserController {
     constructor(
         private userService: UserService,
-        private validator: ValidatorService
+        private validator: ValidatorService,
+        private storageService: StorageService,
     ) { }
 
     @Post('create')
-    async create(@Body() body: object) {
+    @UseInterceptors(FileInterceptor('avatar', {
+        dest: '/uploads/temp',
+    }))
+    async create(@Req() request: any, @Body() body: any, @UploadedFile() file: any) {
         try {
-            this.validator.schema(createUserSchema).validate(body);
+            this.validator.schema(createUserSchema).validate({ 
+                ...body, 
+                ...file 
+            });
+
+            if (file) {
+                const uploadedFile = this.storageService.writeFile(file, `avatar/${request.user._uid}`, request);
+                body.avatar = uploadedFile.fileName;
+            }
 
             const result = await this.userService.create(body);
             return result;
