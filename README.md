@@ -32,12 +32,12 @@
 ### Installation
 
 ```bash
-    git clone https://github.com/indra-yana/nestjs-starter.git
-    cp .env.example .env
-    setup .env
-    create database
-    npm install
-    npm run migration:up
+git clone https://github.com/indra-yana/nestjs-starter.git
+cp .env.example .env
+setup .env
+create database
+npm install
+npm run migration:up
 ```
 
 ### About Project
