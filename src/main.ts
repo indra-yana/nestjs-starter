@@ -1,4 +1,4 @@
-import { AppModule } from './app.module';
+import { IndexModule } from './app.module';
 import { dirname, join } from 'path';
 import { NestFactory } from '@nestjs/core';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
@@ -10,7 +10,7 @@ const baseDir = dirname(__dirname);
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
+    IndexModule,
     new FastifyAdapter()
   );
 

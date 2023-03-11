@@ -1,5 +1,5 @@
 import { APP_GUARD } from '@nestjs/core/constants';
-import { AppModule } from './main/app.module';
+import { IndexModule } from './index/index.module';
 import { JwtAuthGuard } from 'src/core/common/auth/guards/jwt.guard';
 import { LoginModule } from './login/login.module';
 import { Module } from '@nestjs/common';
@@ -11,7 +11,7 @@ import { VerifyModule } from './verify/verify.module';
 
 @Module({
     imports: [
-        AppModule, 
+        IndexModule, 
         UserModule,
         RegisterModule,
         LoginModule,
