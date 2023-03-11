@@ -1,3 +1,4 @@
+import { fileMapper } from 'src/core/helper/file-mapper';
 import { Injectable } from '@nestjs/common';
 import { LocaleService } from '../locale/locale.service';
 import { nanoid } from 'nanoid';
@@ -5,7 +6,6 @@ import { pipeline } from 'stream';
 import * as fs from 'fs';
 import * as path from 'path';
 import InvariantException from 'src/core/exceptions/InvariantException';
-import { fileMapper } from 'src/core/helper/file-mapper';
 
 @Injectable()
 export class StorageService {

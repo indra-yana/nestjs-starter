@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createUserSchema } from './user.validator.schema';
 import { FileInterceptor } from '@nest-lab/fastify-multer/src/lib/interceptors';
+import { localStorage } from 'src/core/common/storage/local.storage';
 import { StorageService } from 'src/core/common/storage/storage.service';
 import { UserService } from './user.service';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
@@ -18,7 +19,9 @@ export class UserController {
 
     @Post('create')
     @UseInterceptors(FileInterceptor('avatar', {
-        dest: '/uploads/temp',
+        storage: localStorage({
+            destination: '/uploads/temp'
+        }),
     }))
     async create(@Req() request: any, @Body() body: any, @UploadedFile() file: any) {
         try {
