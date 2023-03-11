@@ -38,4 +38,4 @@ import email from './core/config/email';
 		}),
 	],
 })
-export class IndexModule { }
+export class AppModule { }

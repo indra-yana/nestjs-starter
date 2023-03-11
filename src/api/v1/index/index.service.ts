@@ -3,21 +3,21 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class IndexService {
-  constructor(
-    private config: ConfigService
-  ) { }
+	constructor(
+		private config: ConfigService
+	) { }
 
-  getHello(): any {
-    const appName = this.config.get('app.name');
-    const appVersion = this.config.get('app.version');
+	getHello(): any {
+		const appName = this.config.get('app.name');
+		const appVersion = this.config.get('app.version');
 
-    return `${appName} - ${appVersion}`;
-  }
+		return `${appName} - ${appVersion}`;
+	}
 
-  getHelloFromApi(): any {
-    const appName = this.config.get('app.name');
-    const appVersion = this.config.get('app.version');
+	getHelloFromApi(): any {
+		const appName = this.config.get('app.name');
+		const appVersion = this.config.get('app.version');
 
-    return `${appName} REST API - ${appVersion}`;
-  }
+		return `${appName} REST API - ${appVersion}`;
+	}
 }

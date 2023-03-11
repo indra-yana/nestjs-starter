@@ -11,7 +11,7 @@ import { VerifyModule } from './verify/verify.module';
 
 @Module({
     imports: [
-        IndexModule, 
+        IndexModule,
         UserModule,
         RegisterModule,
         LoginModule,

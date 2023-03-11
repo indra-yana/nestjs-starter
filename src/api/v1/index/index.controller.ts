@@ -3,18 +3,18 @@ import { IndexService } from './index.service';
 
 @Controller()
 export class IndexController {
-  constructor(
-    private readonly appService: IndexService
-  ) { }
+	constructor(
+		private readonly appService: IndexService
+	) { }
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+	@Get()
+	getHello(): string {
+		return this.appService.getHello();
+	}
 
-  @Get('api')
-  getHelloFromApi(): string {
-    return this.appService.getHelloFromApi();
-  }
+	@Get('api')
+	getHelloFromApi(): string {
+		return this.appService.getHelloFromApi();
+	}
 
 }
