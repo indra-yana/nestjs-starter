@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('roles')
 export class Role {
   constructor(params: Partial<Role>) {
     Object.assign(this, params);

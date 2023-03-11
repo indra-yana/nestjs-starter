@@ -31,6 +31,12 @@ export const nameSchema = Joi
     .max(255)
     .required();
 
+export const idSchema = Joi
+    .string()
+    .min(16)
+    .max(16)
+    .required();
+
 export const mimetypeSchema = Joi
     .string()
     .valid(

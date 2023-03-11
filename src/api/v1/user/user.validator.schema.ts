@@ -5,6 +5,7 @@ import {
 	passwordConfirmationSchema,
 	emailSchema,
 	imageMimetypeSchema,
+	idSchema,
 } from 'src/core/common/validator/shared.validator.schema';
 import { Joi } from 'src/core/common/validator/validator.service';
 
@@ -36,5 +37,5 @@ export const updateUserSchema = Joi.object({
 }).unknown();
 
 export const validateIdSchema = Joi.object({
-	id: Joi.string().required(),
+	id: idSchema,
 });
