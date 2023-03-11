@@ -38,6 +38,10 @@ setup .env
 create database
 npm install
 npm run migration:up
+npm run start or 
+npm run start:dev           // to watch file changes like nodemon
+visit localhost:3000  
+done!      
 ```
 
 ### About Project
