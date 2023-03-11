@@ -15,7 +15,7 @@
   </a>
 </div>
 
-## Dev Stack
+### Dev Stack
 
 - @nestjs v9.0.x
 - @nestjs/platform-fastify v9.3.x
@@ -30,18 +30,15 @@
 - and more
 
 ### Installation
-##### Installation 
-> git clone https://github.com/indra-yana/nestjs-starter.git
 
-> cp .env.example .env
-
-> setup .env
-
-> create database
-
-> npm install
-
-> npm run migration:up
+```bash
+    git clone https://github.com/indra-yana/nestjs-starter.git
+    cp .env.example .env
+    setup .env
+    create database
+    npm install
+    npm run migration:up
+```
 
 ### About Project
 
