@@ -28,7 +28,7 @@ export class UserService {
         return this;
     }
 
-    public getHttpRequest() {        
+    public getHttpRequest() {
         if (!this.httpRequest) {
             throw new InvariantException({
                 message: 'The request object is required',
@@ -38,7 +38,7 @@ export class UserService {
         return this.httpRequest;
     }
 
-    async create(payload: any, file?: Express.Multer.File) {
+    async create(payload: any, file?: Express.Multer.File, directUpload: boolean = true) {
         const { name, username, email, password } = payload;
 
         await this.checkUsernameOrEmailExists(username, email);
@@ -50,9 +50,9 @@ export class UserService {
             password,
         }
 
-        if (file) {
+        if (file && directUpload) {
             const request = this.getHttpRequest();
-            const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${this.httpRequest.user._uid}`, request);                
+            const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${request.user._uid}`, request);
             params.avatar = uploadedFile.fileName;
         }
 
@@ -62,6 +62,13 @@ export class UserService {
         return {
             id: result.id
         }
+    }
+
+    async uploadAvatar(id: string, file: Express.Multer.File) {
+        const request = this.getHttpRequest();
+        const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${id}`, request);
+
+        await this.patchOneBy(id, 'avatar', uploadedFile.fileName);
     }
 
     async update(payload: any, file?: Express.Multer.File) {
@@ -77,7 +84,7 @@ export class UserService {
 
         if (file) {
             const request = this.getHttpRequest();
-            const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${id}`, request);                
+            const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${id}`, request);
             params.avatar = uploadedFile.fileName;
         }
 
@@ -85,14 +92,14 @@ export class UserService {
         if (result.affected === 0) {
             throw new InvariantException({
                 message: this.locale.t('app.message.updated_fail'),
-            });    
+            });
         }
 
         return await this.find(id);
     }
 
     async delete(id: string) {
-        const result = await this.usersRepository.delete(id);        
+        const result = await this.usersRepository.delete(id);
         return result.affected !== 0;
     }
 
@@ -103,12 +110,12 @@ export class UserService {
             },
             select: {
                 id: true,
-                name: true, 
-                username: true, 
-                password, 
+                name: true,
+                username: true,
+                password,
                 email: true,
                 avatar: true,
-                created_at: true, 
+                created_at: true,
                 updated_at: true,
                 email_verified_at: true,
             }
@@ -122,7 +129,7 @@ export class UserService {
 
         return result;
     }
-    
+
     async findOneBy(key: string, value: any) {
         const result = await this.usersRepository.findOneBy({
             [key]: value
@@ -138,7 +145,7 @@ export class UserService {
     }
 
     async findWithCredential(credential: object) {
-        const key = credential['username'] ? 'username' : 'email';        
+        const key = credential['username'] ? 'username' : 'email';
         const result = await this.usersRepository.findOne({
             where: {
                 [key]: credential[key],
@@ -167,7 +174,7 @@ export class UserService {
         if (result.affected === 0) {
             throw new InvariantException({
                 message: this.locale.t('app.message.updated_fail'),
-            });    
+            });
         }
 
         return await this.find(id);
@@ -184,14 +191,14 @@ export class UserService {
 
     async checkUsernameOrEmailExists(username: string, email: string) {
         const usernameExist = await this.usersRepository
-                            .createQueryBuilder()
-                            .where("username = :username", { username })
-                            .getExists();
+            .createQueryBuilder()
+            .where("username = :username", { username })
+            .getExists();
 
         const emailExist = await this.usersRepository
-                            .createQueryBuilder()
-                            .where("email = :email", { email })
-                            .getExists();
+            .createQueryBuilder()
+            .where("email = :email", { email })
+            .getExists();
 
         const validations = [];
         if (usernameExist) {
@@ -218,16 +225,16 @@ export class UserService {
 
     async checkUniqueUsernameOrEmail(id: string, username: string, email: string) {
         const usernameExist = await this.usersRepository
-                            .createQueryBuilder()
-                            .where("username = :username", { username })
-                            .andWhere("id != :id", { id })
-                            .getExists();
-        
+            .createQueryBuilder()
+            .where("username = :username", { username })
+            .andWhere("id != :id", { id })
+            .getExists();
+
         const emailExist = await this.usersRepository
-                            .createQueryBuilder()
-                            .where("email = :email", { email })
-                            .andWhere("id != :id", { id })
-                            .getExists();
+            .createQueryBuilder()
+            .where("email = :email", { email })
+            .andWhere("id != :id", { id })
+            .getExists();
 
         const validations = [];
         if (usernameExist) {

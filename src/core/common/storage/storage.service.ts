@@ -44,7 +44,7 @@ export class StorageService {
 
         switch (this.driver) {
             case STORAGE_DRIVER.FTP:
-                uploadResult = this.uploadToFtp(file, destination, request);
+                uploadResult = this.uploadToFtp(file, destination);
                 break;
             case STORAGE_DRIVER.LOCAL:
             default:
@@ -55,7 +55,7 @@ export class StorageService {
         return uploadResult;
     }
 
-    private uploadToLocalStorage(file: Express.Multer.File, destination: string = '', request?: any): UploadResult {
+    private uploadToLocalStorage(file: Express.Multer.File, destination: string, request?: any): UploadResult {
         const { path: tempFile, originalname: name } = file;
         const fileName = this.createFileName(name);
         const folder = `${this.rootFolder}/${destination}`;
@@ -84,7 +84,7 @@ export class StorageService {
         }
     }
 
-    private uploadToFtp(file: Express.Multer.File, destination: string = '', request?: any): UploadResult {
+    private uploadToFtp(file: Express.Multer.File, destination: string): UploadResult {
         throw new Error('Not yet implemented!');
     }
 
