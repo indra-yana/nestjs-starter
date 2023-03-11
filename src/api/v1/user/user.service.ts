@@ -1,57 +1,87 @@
+import { FILE_PATH } from 'src/core/common/storage/file-helper';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { joiValidationFormat } from 'src/core/helper/helper';
 import { LocaleService } from 'src/core/common/locale/locale.service';
 import { Repository } from 'typeorm';
+import { StorageService } from 'src/core/common/storage/storage.service';
 import { User } from 'src/core/common/database/typeorm/entities/user';
 import * as bcrypt from 'bcrypt';
+import InvariantException from 'src/core/exceptions/InvariantException';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import ValidationException from 'src/core/exceptions/ValidationException';
-import InvariantException from 'src/core/exceptions/InvariantException';
 
 @Injectable()
 export class UserService {
+
+    private httpRequest: any;
+
     constructor(
         @InjectRepository(User)
         private usersRepository: Repository<User>,
-        private locale: LocaleService
+        private locale: LocaleService,
+        private storageService: StorageService,
     ) { }
 
-    async create(payload: any) {
-        const { name, username, email, password, avatar } = payload;
+    public setHttpRequest(request: any) {
+        this.httpRequest = request;
+        return this;
+    }
+
+    public getHttpRequest() {        
+        if (!this.httpRequest) {
+            throw new InvariantException({
+                message: 'The request object is required',
+            });
+        }
+
+        return this.httpRequest;
+    }
+
+    async create(payload: any, file?: Express.Multer.File) {
+        const { name, username, email, password } = payload;
 
         await this.checkUsernameOrEmailExists(username, email);
 
-        const newUser = new User({
+        const params: Partial<User> = {
             name,
             username,
             email,
-            avatar,
             password,
-        })
+        }
 
-        const result = await this.usersRepository.save(newUser);
+        if (file) {
+            const request = this.getHttpRequest();
+            const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${this.httpRequest.user._uid}`, request);                
+            params.avatar = uploadedFile.fileName;
+        }
+
+        const data = new User(params);
+        const result = await this.usersRepository.save(data);
+
         return {
             id: result.id
         }
     }
 
-    async update(payload: any) {
-        const { id, name, username, email, avatar } = payload;
+    async update(payload: any, file?: Express.Multer.File) {
+        const { id, name, username, email } = payload;
 
         await this.checkUniqueUsernameOrEmail(id, username, email);
 
-        const updatedUser = {
+        const params: any = {
             name,
             username,
             email,
         }
 
-        if (avatar) {
-            updatedUser['avatar'] = avatar;            
+        if (file) {
+            const request = this.getHttpRequest();
+            const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${id}`, request);                
+            params.avatar = uploadedFile.fileName;
         }
 
-        const result = await this.usersRepository.update(id, updatedUser);
+        const result = await this.usersRepository.update(id, params);
         if (result.affected === 0) {
             throw new InvariantException({
                 message: this.locale.t('app.message.updated_fail'),

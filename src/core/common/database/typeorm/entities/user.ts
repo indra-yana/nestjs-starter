@@ -12,8 +12,10 @@ import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class User {
-	constructor(params: Partial<User>) {
-		Object.assign(this, params);
+	constructor(params?: Partial<User>) {
+		if (params) {
+			Object.assign(this, params);
+		}
 	}
 
 	@PrimaryColumn()

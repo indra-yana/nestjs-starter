@@ -1,9 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createUserSchema, updateUserSchema, validateIdSchema } from './user.validator.schema';
-import { FILE_PATH } from 'src/core/common/storage/file-helper';
 import { FileInterceptor } from '@nest-lab/fastify-multer/src/lib/interceptors';
 import { localStorage } from 'src/core/common/storage/local.storage';
-import { StorageService } from 'src/core/common/storage/storage.service';
 import { UserService } from './user.service';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 
@@ -15,7 +13,6 @@ export class UserController {
     constructor(
         private userService: UserService,
         private validator: ValidatorService,
-        private storageService: StorageService,
     ) { }
 
     @Post('create')
@@ -29,12 +26,9 @@ export class UserController {
                 ...file 
             });
 
-            if (file) {
-                const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${request.user._uid}`, request);                
-                body.avatar = uploadedFile.fileName;
-            }
-
-            const result = await this.userService.create(body);
+            const result = await this.userService
+                                    .setHttpRequest(request)
+                                    .create(body, file);
             return result;
         } catch (error) {
             throw error;
@@ -64,12 +58,9 @@ export class UserController {
                 ...file 
             });
 
-            if (file) {
-                const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${body.id}`, request);
-                body.avatar = uploadedFile.fileName;
-            }
-            
-            const result = await this.userService.update(body);
+            const result = await this.userService
+                                    .setHttpRequest(request)
+                                    .update(body, file);
             return result;
         } catch (error) {
             throw error;
