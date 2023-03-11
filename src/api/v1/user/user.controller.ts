@@ -26,10 +26,14 @@ export class UserController {
                 ...file 
             });
 
-            const result = await this.userService
-                                    .setHttpRequest(request)
-                                    .create(body, file);
-            return result;
+            const user = await this.userService.create(body, null, false);
+            if (file) {
+                this.userService
+                    .setHttpRequest(request)
+                    .uploadAvatar(user.id, file);
+            }
+
+            return user;
         } catch (error) {
             throw error;
         }
@@ -58,10 +62,14 @@ export class UserController {
                 ...file 
             });
 
-            const result = await this.userService
-                                    .setHttpRequest(request)
-                                    .update(body, file);
-            return result;
+            const user = await this.userService.update(body, null, false);
+            if (file) {
+                this.userService
+                    .setHttpRequest(request)
+                    .uploadAvatar(user.id, file);
+            }
+
+            return user;
         } catch (error) {
             throw error;
         }

@@ -71,7 +71,7 @@ export class UserService {
         await this.patchOneBy(id, 'avatar', uploadedFile.fileName);
     }
 
-    async update(payload: any, file?: Express.Multer.File) {
+    async update(payload: any, file?: Express.Multer.File, directUpload: boolean = true) {
         const { id, name, username, email } = payload;
 
         await this.checkUniqueUsernameOrEmail(id, username, email);
@@ -82,7 +82,7 @@ export class UserService {
             email,
         }
 
-        if (file) {
+        if (file && directUpload) {
             const request = this.getHttpRequest();
             const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${id}`, request);
             params.avatar = uploadedFile.fileName;
