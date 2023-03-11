@@ -18,7 +18,7 @@
 ## Dev Stack
 
 - @nestjs v9.0.x
-- @nestjs/platform-fastify v4.11.x
+- @nestjs/platform-fastify v9.3.x
 - Passport Authentication - (passport-local, passport-jwt)
 - Postgres Database
 - Type ORM
@@ -26,16 +26,21 @@
 - Joi Validation
 - Handlebars (View Engine)
 - Node Mailer
-- nestjs fastify-multer - uploading file
+- Nestjs fastify-multer - uploading file
 - and more
 
 ### Installation
 ##### Installation 
 > git clone https://github.com/indra-yana/nestjs-starter.git
+
 > cp .env.example .env
+
 > setup .env
+
 > create database
+
 > npm install
+
 > npm run migration:up
 
 ### About Project
