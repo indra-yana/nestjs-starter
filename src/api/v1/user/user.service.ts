@@ -45,7 +45,10 @@ export class UserService {
             name,
             username,
             email,
-            avatar,
+        }
+
+        if (avatar) {
+            updatedUser['avatar'] = avatar;            
         }
 
         const result = await this.usersRepository.update(id, updatedUser);
@@ -74,6 +77,7 @@ export class UserService {
                 username: true, 
                 password, 
                 email: true,
+                avatar: true,
                 created_at: true, 
                 updated_at: true,
                 email_verified_at: true,

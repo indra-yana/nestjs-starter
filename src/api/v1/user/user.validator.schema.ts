@@ -21,3 +21,20 @@ export const createUserSchema = Joi.object({
 		size: Joi.number().min(1000).max(1100000).optional(),  // Limit file size to 1MB 
 	}).unknown().optional(),
 }).unknown();
+
+export const updateUserSchema = Joi.object({
+	id: Joi.string().required(),
+	name: nameSchema,
+	username: usernameSchema,
+	email: emailSchema,
+	avatar: Joi.object({
+		fieldname: Joi.string().optional(),
+		originalname: Joi.string().optional(),
+		mimetype: imageMimetypeSchema.optional(),
+		size: Joi.number().min(1000).max(1100000).optional(),  // Limit file size to 1MB 
+	}).unknown().optional(),
+}).unknown();
+
+export const validateIdSchema = Joi.object({
+	id: Joi.string().required(),
+});
