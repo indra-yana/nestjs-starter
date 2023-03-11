@@ -39,7 +39,7 @@ export class StorageService {
         return this;
     }
 
-    public upload(file: Express.Multer.File, destination: string = '', request?: any): UploadResult {
+    public upload(file: Express.Multer.File, destination: string, request?: any): UploadResult {
         let uploadResult: UploadResult = null;
 
         switch (this.driver) {
