@@ -15,6 +15,12 @@
   </a>
 </div>
 
+### About Project
+
+This is a starter kit project to quickly setup and start working on a new Nest JS application. This is a boilerplate with common standard features like authentication, roles management, file management, and more. 
+
+Trust, This will help you to decrease the development time process instead of build an nest js app from scratch, but the most important is you must understand with fundamental of nest js framework first. 
+
 ### Dev Stack
 
 - @nestjs v9.0.x
@@ -28,25 +34,6 @@
 - Node Mailer
 - Nestjs fastify-multer - uploading file
 - and more
-
-### Installation
-
-```bash
-git clone https://github.com/indra-yana/nestjs-starter.git
-cp .env.example .env
-setup .env
-create database
-npm install
-npm run migration:up
-npm run start or 
-npm run start:dev           // to watch file changes like nodemon
-visit localhost:3000  
-done!      
-```
-
-### About Project
-
-This is a starter kit project to quickly setup and start working on a new nest js application, the project included basic features listed bellow:
 
 ## Features
 
@@ -63,6 +50,21 @@ This is a starter kit project to quickly setup and start working on a new nest j
 - Secure app HTTP headers using [helmet](https://helmetjs.github.io)
 - Fully coded with Typescript
 - etc
+
+### Installation
+
+```bash
+git clone https://github.com/indra-yana/nestjs-starter.git
+cp .env.example .env
+setup .env
+create database
+npm install
+npm run migration:up
+npm run start or 
+npm run start:dev           // to watch file changes like nodemon
+visit localhost:3000  
+done!      
+```
 
 ### API Spec
 #### TODO
