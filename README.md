@@ -6,7 +6,7 @@
   </a>
 </div>
 
-<h3 align="center">A NESTJS SKELETON FOR STARTER PROJECT </h3>
+<h3 align="center">A NEST JS SKELETON BACKEND REST API FOR STARTER KIT PROJECT </h3>
 
 <div align="center">
   <a href="https://nestjs.com" target="_blank">
@@ -17,7 +17,7 @@
 
 ### About Project
 
-This is a starter kit project to quickly setup and start working on a new Nest JS application. This is a boilerplate with common standard features like authentication, roles management, file management, and more. 
+This is a starter kit project to quickly setup and start working on a new Nest JS REST API application. This is a boilerplate with common standard features like authentication, roles management, file management, and more. 
 
 Trust, This will help you to decrease the development time process instead of build an nest js app from scratch, but the most important is you must understand with fundamental of nest js framework first. 
 
@@ -53,6 +53,7 @@ Trust, This will help you to decrease the development time process instead of bu
 - Modular system and clean architecture
 - Secure app HTTP headers using [helmet](https://helmetjs.github.io) [WIP]
 - FTP file upload [WIP]
+- Mailer Sender
 - Fully coded with Typescript
 - etc
 
