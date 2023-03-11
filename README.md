@@ -46,7 +46,7 @@ Trust, This will help you to decrease the development time process instead of bu
 - User Management (CRUD)
 - Role Management (CRUD)
 - File Management (Upload, Download, Preview, List of User Files)
-- Modular and clean architecture
+- Modular system and clean architecture
 - Secure app HTTP headers using [helmet](https://helmetjs.github.io)
 - Fully coded with Typescript
 - etc
