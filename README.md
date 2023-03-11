@@ -64,6 +64,9 @@ This is a starter kit project to quickly setup and start working on a new nest j
 - Fully coded with Typescript
 - etc
 
+### API Spec
+#### TODO
+
 ### Author
 
 - [Indra Muliana](https://github.com/indra-yana) - <a href="mailto:indra.ndra26@gmail.com" target="_blank">indra.ndra26@gmail.com</a>
