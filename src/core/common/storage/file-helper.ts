@@ -5,7 +5,15 @@ export enum FILE_PATH {
 }
 
 function getBaseURL(request?: any) {
-    return request ? `${request.protocol}://${request.headers.host}` : (process.env.APP_CDN_BASE_URL || 'localhost');
+    if (process.env.STORAGE_DRIVER === 'local') {
+        return request ? `${request.protocol}://${request.headers.host}` : '';
+    }
+    
+    if (process.env.STORAGE_DRIVER === 'ftp') {
+        return process.env.APP_CDN_BASE_URL;
+    }
+
+    return 'localhost';
 }
 
 export function fileMapper(fileName: string, destination: string, request?: any): string {

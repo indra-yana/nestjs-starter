@@ -24,6 +24,6 @@ export class File extends BaseEntity<File> {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @DeleteDateColumn()
+    @DeleteDateColumn({ select: false })
     deleted_at: Date;
 }

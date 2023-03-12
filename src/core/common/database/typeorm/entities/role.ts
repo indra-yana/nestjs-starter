@@ -23,6 +23,6 @@ export class Role extends BaseEntity<Role> {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ select: false })
   deleted_at: Date;
 }
