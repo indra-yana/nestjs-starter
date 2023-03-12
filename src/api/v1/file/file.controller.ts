@@ -1,9 +1,10 @@
 import { Body, Controller, Get, Param, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createFileSchema } from './file.validator.schema';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
-import { fileMapper, FILE_PATH } from 'src/core/common/storage/file-helper';
+import { fileMapper, FILE_PATH, readRemoteFile } from 'src/core/common/storage/file-helper';
 import { FileService } from './file.service';
 import { localStorage } from 'src/core/common/storage/local.storage';
+import { resolve } from 'path';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 
 @Controller({
@@ -65,6 +66,23 @@ export class FileController {
             const url = fileMapper(name, `${FILE_PATH[type.toUpperCase()] || 'unknown'}/${user_id}`);
 
             return response.download(url.replace('public', ''));
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @Get('download/remote/:id')
+    async remoteDownload(@Req() request: any, @Res() response: any, @Param('id') id: string) {
+        try {
+            const file = await this.fileService.find(id);
+            const { name, type, user_id } = file;
+
+            const url = fileMapper(name, `${FILE_PATH[type.toUpperCase()] || 'unknown'}/${user_id}`, request);
+            const tempPath = `${FILE_PATH.ROOT}/${FILE_PATH.TEMP_FILE}`;
+            const root = resolve(tempPath);            
+            const tempFile = await readRemoteFile(url, root);
+
+            return response.download(`uploads/temp/${tempFile}`);
         } catch (error) {
             throw error;
         }
