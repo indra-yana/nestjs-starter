@@ -1,6 +1,4 @@
-import { nanoid } from 'nanoid';
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -8,12 +6,10 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import BaseEntity from '../base.entity';
 
 @Entity('roles')
-export class Role {
-  constructor(params: Partial<Role>) {
-    Object.assign(this, params);
-  }
+export class Role extends BaseEntity<Role> {
 
   @PrimaryColumn()
   id: string;
@@ -29,9 +25,4 @@ export class Role {
 
   @DeleteDateColumn()
   deleted_at: Date;
-
-  @BeforeInsert()
-  createId() {
-    this.id = nanoid(16);
-  }
 }

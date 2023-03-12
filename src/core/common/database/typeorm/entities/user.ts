@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import {
   Entity,
   Column,
@@ -9,14 +8,10 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import BaseEntity from '../base.entity';
 
 @Entity('users')
-export class User {
-	constructor(params?: Partial<User>) {
-		if (params) {
-			Object.assign(this, params);
-		}
-	}
+export class User extends BaseEntity<User>  {
 
 	@PrimaryColumn()
 	id: string;
@@ -51,11 +46,6 @@ export class User {
 
 	@Column({ default: null })
 	email_verified_at: Date;
-
-	@BeforeInsert()
-	createId() {
-		this.id = nanoid(16);
-	}
 
 	@BeforeInsert()
 	hashPassword() {
