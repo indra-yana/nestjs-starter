@@ -1,5 +1,6 @@
 import { File } from 'src/core/common/database/typeorm/entities/file';
 import { FILE_PATH } from 'src/core/common/storage/file-helper';
+import { getSkip, paginate, PagingQuery } from 'src/core/helper/pagination';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LocaleService } from 'src/core/common/locale/locale.service';
@@ -7,7 +8,6 @@ import { Repository } from 'typeorm';
 import { StorageService } from 'src/core/common/storage/storage.service';
 import InvariantException from 'src/core/exceptions/InvariantException';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
-import { getSkip, paginate } from 'src/core/helper/pagination';
 
 @Injectable()
 export class FileService {
@@ -56,7 +56,7 @@ export class FileService {
         }
     }
 
-    async all(query: any = {}) {
+    async all(query: PagingQuery) {
         const { page, limit } = query;
         const skip = getSkip(page, limit);
         const result = await this.fileRepository.findAndCount({
@@ -64,7 +64,8 @@ export class FileService {
             skip
         });
 
-        return paginate(result, page, limit);
+        const [data = null, total = 0] = result;
+        return paginate(data, page, limit, total);
     }
 
     async find(id: string) {

@@ -1,5 +1,5 @@
 import { FILE_PATH } from 'src/core/common/storage/file-helper';
-import { getSkip, paginate } from 'src/core/helper/pagination';
+import { getSkip, paginate, PagingQuery } from 'src/core/helper/pagination';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { joiValidationFormat } from 'src/core/helper/helper';
@@ -162,7 +162,7 @@ export class UserService {
         return result;
     }
 
-    async all(query: any = {}) {
+    async all(query: PagingQuery) {
         const { page, limit } = query;
         const skip = getSkip(page, limit);
         const result = await this.usersRepository.findAndCount({
@@ -180,7 +180,8 @@ export class UserService {
             skip
         });
 
-        return paginate(result, page, limit);
+        const [data = null, total = 0] = result;
+        return paginate(data, page, limit, total);
     }
 
     async patchOneBy(id: string, key: string, value: any) {
