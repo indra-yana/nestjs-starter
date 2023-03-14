@@ -6,7 +6,7 @@ export const createFileSchema = Joi.object({
 		fieldname: Joi.string().required(),
 		originalname: Joi.string().required(),
 		mimetype: mimetypeSchema.required(),
-		size: Joi.number().min(1000).max(1100000).required(),  // Limit file size to 1MB 
+		size: Joi.number().min(1000).max(5000000).required(),  // Limit file size to 5MB 
 	}).unknown().required(),
 }).unknown();
 
