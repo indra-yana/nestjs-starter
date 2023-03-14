@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createFileSchema } from './file.validator.schema';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
 import { fileMapper, FILE_PATH, readRemoteFile } from 'src/core/common/storage/file-helper';
@@ -40,10 +40,18 @@ export class FileController {
     }
 
     @Get('all/:type?')
-    async all(@Req() request: any) {
+    async all(
+        @Req() request: any,
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+        @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+    ) {
         try {
-            const files = await this.fileService.all();
-            const fileMap = files.map(function (file) {
+            let files = await this.fileService.all({
+                page,
+                limit,
+            });
+
+            files.data = files.data.map(function (file) {
                 const { name, type, user_id } = file;
                 return {
                     ...file,
@@ -51,7 +59,7 @@ export class FileController {
                 }
             })
 
-            return fileMap;
+            return files;
         } catch (error) {
             throw error;
         }

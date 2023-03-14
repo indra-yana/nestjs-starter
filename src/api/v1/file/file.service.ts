@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { StorageService } from 'src/core/common/storage/storage.service';
 import InvariantException from 'src/core/exceptions/InvariantException';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
+import { getSkip, paginate } from 'src/core/helper/pagination';
 
 @Injectable()
 export class FileService {
@@ -55,8 +56,15 @@ export class FileService {
         }
     }
 
-    async all() {
-        return await this.fileRepository.find();
+    async all(query: any = {}) {
+        const { page, limit } = query;
+        const skip = getSkip(page, limit);
+        const result = await this.fileRepository.findAndCount({
+            take: limit,
+            skip
+        });
+
+        return paginate(result, page, limit);
     }
 
     async find(id: string) {
