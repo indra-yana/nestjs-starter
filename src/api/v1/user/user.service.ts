@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import InvariantException from 'src/core/exceptions/InvariantException';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import ValidationException from 'src/core/exceptions/ValidationException';
+import { getSkip, paginate } from 'src/core/helper/pagination';
 
 @Injectable()
 export class UserService {
@@ -161,8 +162,10 @@ export class UserService {
         return result;
     }
 
-    async all() {
-        return await this.usersRepository.find({
+    async all(query: any = {}) {
+        const { page, limit } = query;
+        const skip = getSkip(page, limit);
+        const result = await this.usersRepository.findAndCount({
             select: {
                 files: {
                     id: true,
@@ -172,8 +175,12 @@ export class UserService {
             },
             relations: {
                 files: true,
-            }
+            },
+            take: limit,
+            skip
         });
+
+        return paginate(result, page, limit);
     }
 
     async patchOneBy(id: string, key: string, value: any) {

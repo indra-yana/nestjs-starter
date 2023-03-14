@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createUserSchema, updateUserSchema, validateIdSchema } from './user.validator.schema';
 import { FileInterceptor } from '@nest-lab/fastify-multer/src/lib/interceptors';
 import { localStorage } from 'src/core/common/storage/local.storage';
@@ -76,9 +76,15 @@ export class UserController {
     }
 
     @Get('list')
-    async all() {
+    async all(
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+        @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+    ) {
         try {
-            const result = await this.userService.all();
+            const result = await this.userService.all({
+                page,
+                limit,
+            });
             return result;
         } catch (error) {
             throw error;
