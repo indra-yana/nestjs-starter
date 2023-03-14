@@ -6,9 +6,12 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   DeleteDateColumn,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import BaseEntity from '../base.entity';
+import { File } from './file';
 
 @Entity('users')
 export class User extends BaseEntity<User>  {
@@ -51,4 +54,7 @@ export class User extends BaseEntity<User>  {
 	hashPassword() {
 		this.password = bcrypt.hashSync(this.password, 10);
 	}
+
+	@OneToMany(() => File, (file) => file.user)
+    files: File[]
 }

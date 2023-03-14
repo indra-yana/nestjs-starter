@@ -48,6 +48,12 @@ export class CreateUsersTable1678766771204 implements MigrationInterface {
                         type: "varchar",
                         default: null,
                     },
+                    {
+                        name: "email_verified_at",
+                        type: "timestamp",
+                        isNullable: true,
+                        default: null,
+                    },
                     ...dateColumn(),
                 ],
             }),

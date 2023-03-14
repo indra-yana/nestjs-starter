@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm"
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm"
+import { User } from "./user";
 import BaseEntity from "../base.entity";
 
 @Entity('files')
@@ -26,4 +27,8 @@ export class File extends BaseEntity<File> {
 
     @DeleteDateColumn({ select: false })
     deleted_at: Date;
+
+    @ManyToOne(() => User, (user) => user.files)
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+    user: User
 }

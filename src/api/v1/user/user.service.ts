@@ -162,7 +162,18 @@ export class UserService {
     }
 
     async all() {
-        return await this.usersRepository.find();
+        return await this.usersRepository.find({
+            select: {
+                files: {
+                    id: true,
+                    name: true,
+                    type: true,
+                }
+            },
+            relations: {
+                files: true,
+            }
+        });
     }
 
     async patchOneBy(id: string, key: string, value: any) {
