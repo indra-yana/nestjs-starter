@@ -1,8 +1,10 @@
-import { DataSource } from "typeorm";
 import 'dotenv/config';
-import * as path from 'path';
+import { CreateFilesTable1678768412234 } from "../common/database/typeorm/migrations/1678768412234-create_files_table";
+import { CreateRolesTable1678767760332 } from "../common/database/typeorm/migrations/1678767760332-Create_Roles_Table";
+import { CreateUsersTable1678766771204 } from "../common/database/typeorm/migrations/1678766771204-create_users_table";
+import { DataSource } from "typeorm";
 import * as fs from 'fs';
-import { CreateTestingTable1678019550621 } from "../common/database/typeorm/migrations/1678004126714-CreateTestingTable";
+import * as path from 'path';
 
 function readFile() {
     const files = fs.readdirSync(path.resolve(`${__dirname}/../common/database/typeorm/migrations`))
@@ -38,8 +40,11 @@ const config = new DataSource({
     password: process.env.DB_PG_PASSWORD,
     database: process.env.DB_PG_DATABASE,
     migrations: [
+        // Deprecated: can'nt use string or path migration
         // path.resolve(`${__dirname}/../common/database/typeorm/migrations/*{.ts,.js}`),
-        CreateTestingTable1678019550621
+        CreateUsersTable1678766771204,
+        CreateRolesTable1678767760332,
+        CreateFilesTable1678768412234
     ],
     migrationsTableName: 'typeorm_migrations',
     logging: false,
