@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { IndexService } from './index.service';
+import { PublicRoute } from 'src/core/decorator/public-route.decorator';
 
 @Controller()
 export class IndexController {
@@ -8,6 +9,7 @@ export class IndexController {
 	) { }
 
 	@Get()
+	@PublicRoute()
 	getHello(): string {
 		return this.appService.getHello();
 	}
