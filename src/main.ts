@@ -1,4 +1,5 @@
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
 import { dirname, join } from 'path';
 import { NestFactory } from '@nestjs/core';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
@@ -14,11 +15,14 @@ async function bootstrap() {
     new FastifyAdapter()
   );
 
+  const configService = app.get<ConfigService>(ConfigService);  
+
   app.setGlobalPrefix('api', { exclude: ['/', 'api'] });
   app.enableVersioning({
     type: VersioningType.URI,
   });
-
+ 
+  app.enableCors(configService.get('cors'));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new HttpResponseInterceptor());
   app.useStaticAssets({
