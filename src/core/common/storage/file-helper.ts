@@ -10,29 +10,29 @@ export enum FILE_PATH {
     TEMP_FILE = 'temp',
 }
 
-function getBaseURL(request?: any) {
+function getStorageURL(request?: any) {
     if (process.env.STORAGE_DRIVER === 'local') {
-        return request ? `${request.protocol}://${request.headers.host}` : '';
+        return request ? `${request.protocol}://${request.headers.host}/${FILE_PATH.ROOT}` : `${FILE_PATH.ROOT}`;
     }
 
     if (process.env.STORAGE_DRIVER === 'ftp') {
-        return process.env.APP_CDN_BASE_URL;
+        return `${process.env.FTP_URL}/${process.env.FTP_ROOT}`;
     }
 
-    return 'localhost';
+    return '';
 }
 
 export function fileMapper(fileName: string, destination: string, request?: any): string {
-    let baseURL = getBaseURL(request);
-    return `${baseURL}/${FILE_PATH.ROOT}/${destination}/${fileName}`;
-};
+    let storageURL = getStorageURL(request);
+    return `${storageURL}/${destination}/${fileName}`;
+}
 
 export function filesMapper(files: Array<string>, destination: string, request: any): Array<string> {
-    let baseURL = getBaseURL(request);
+    let storageURL = getStorageURL(request);
     return files.map((fileName) => {
-        return `${baseURL}/${FILE_PATH.ROOT}/${destination}/${fileName}`;
+        return `${storageURL}/${destination}/${fileName}`;
     });
-};
+}
 
 export const imageFileFilter = (
     req: any,
@@ -44,7 +44,7 @@ export const imageFileFilter = (
     }
 
     callback(null, true);
-};
+}
 
 export async function readRemoteFile(url: any, dest: any) {
     return new Promise((resolve, reject) => {

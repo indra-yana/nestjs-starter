@@ -1,4 +1,5 @@
-import { fileMapper, FILE_PATH } from 'src/core/common/storage/file-helper';
+import { ConfigService } from '@nestjs/config';
+import { fileMapper } from 'src/core/common/storage/file-helper';
 import { Injectable } from '@nestjs/common';
 import { LocaleService } from '../locale/locale.service';
 import { nanoid } from 'nanoid';
@@ -20,21 +21,17 @@ type UploadResult = {
 @Injectable()
 export class StorageService {
 
-    private rootFolder: string;
-
-    private driver: STORAGE_DRIVER;
+    private driver: string;
 
     constructor(
         private localeService: LocaleService,
+        private configService: ConfigService,
     ) {
-        const root = path.resolve(FILE_PATH.ROOT);
-        this.rootFolder = root;
-        this.createFolder(root);
-
-        this.setDriver(STORAGE_DRIVER.LOCAL);
+        const driver = this.configService.get('storage.driver');
+        this.setDriver(driver);
     }
 
-    public setDriver(driver?: STORAGE_DRIVER) {
+    public setDriver(driver?: string) {
         this.driver = driver || STORAGE_DRIVER.LOCAL;
         return this;
     }
@@ -58,10 +55,10 @@ export class StorageService {
     private uploadToLocalStorage(file: Express.Multer.File, destination: string, request?: any): UploadResult {
         const { path: tempFile, originalname: name } = file;
         const fileName = this.createFileName(name);
-        const folder = `${this.rootFolder}/${destination}`;
-        if (destination) {
-            this.createFolder(folder);
-        }
+        const root = path.resolve(this.configService.get('storage.disks.local.root'));
+        const folder = `${root}/${destination}`;
+
+        this.createFolder(folder);
 
         let filePath = `${folder}/${fileName}`;
         const readFileStream = fs.createReadStream(tempFile);

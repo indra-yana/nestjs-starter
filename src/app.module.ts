@@ -14,6 +14,7 @@ import cors from './core/config/cors';
 import database from './core/config/database';
 import email from './core/config/email';
 import helmet from './core/config/helmet';
+import storage from './core/config/storage';
 
 @Module({
 	imports: [
@@ -36,6 +37,7 @@ import helmet from './core/config/helmet';
 				auth,
 				cors,
 				helmet,
+				storage,
 			],
 		}),
 	],
