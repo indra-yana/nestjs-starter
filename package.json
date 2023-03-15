@@ -26,6 +26,7 @@
     "migration:show": "npm run typeorm migration:show"
   },
   "dependencies": {
+    "@fastify/helmet": "^10.1.0",
     "@fastify/static": "^6.9.0",
     "@nest-lab/fastify-multer": "^1.1.0",
     "@nestjs-modules/mailer": "^1.8.1",
