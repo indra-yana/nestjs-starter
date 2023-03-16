@@ -44,14 +44,15 @@ export class FileService {
         }
 
         const request = this.getHttpRequest();
-        const uploadedFile = this.storageService.upload(file, `${FILE_PATH[type.toUpperCase()] || 'unknown'}/${userId}`, request);
+        const uploadedFile = await this.storageService.upload(file, `${FILE_PATH[type.toUpperCase()] || 'unknown'}/${userId}`, request);
         params.name = uploadedFile.fileName;
+        params.driver = this.storageService.getDriver();
 
         const data = new File(params);
         const result = await this.fileRepository.save(data);
 
         return {
-            id: result.id,
+            id: result.id, 
             url: uploadedFile.url,
         }
     }

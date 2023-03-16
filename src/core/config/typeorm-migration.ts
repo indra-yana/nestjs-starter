@@ -5,6 +5,7 @@ import { CreateUsersTable1678766771204 } from "../common/database/typeorm/migrat
 import { DataSource } from "typeorm";
 import * as fs from 'fs';
 import * as path from 'path';
+import { AddDriverColumnToFilesTable1678939253903 } from '../common/database/typeorm/migrations/1678939253903-Add_Driver_Column_To_Files_Table';
 
 function readFile() {
     const files = fs.readdirSync(path.resolve(`${__dirname}/../common/database/typeorm/migrations`))
@@ -44,7 +45,8 @@ const config = new DataSource({
         // path.resolve(`${__dirname}/../common/database/typeorm/migrations/*{.ts,.js}`),
         CreateUsersTable1678766771204,
         CreateRolesTable1678767760332,
-        CreateFilesTable1678768412234
+        CreateFilesTable1678768412234,
+        AddDriverColumnToFilesTable1678939253903,
     ],
     migrationsTableName: 'typeorm_migrations',
     logging: false,

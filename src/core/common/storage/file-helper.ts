@@ -10,25 +10,31 @@ export enum FILE_PATH {
     TEMP_FILE = 'temp',
 }
 
-function getStorageURL(request?: any) {
-    if (process.env.STORAGE_DRIVER === 'local') {
+export enum STORAGE_DRIVER {
+    LOCAL = 'local',
+    FTP = 'ftp',
+}
+
+function getStorageURL(opts?: any) {
+    if (opts.driver === STORAGE_DRIVER.LOCAL || process.env.STORAGE_DRIVER === STORAGE_DRIVER.LOCAL) {
+        const request = opts.request || undefined;
         return request ? `${request.protocol}://${request.headers.host}/${FILE_PATH.ROOT}` : `${FILE_PATH.ROOT}`;
     }
 
-    if (process.env.STORAGE_DRIVER === 'ftp') {
+    if (opts.driver === STORAGE_DRIVER.FTP || process.env.STORAGE_DRIVER === STORAGE_DRIVER.FTP) {
         return `${process.env.FTP_URL}/${process.env.FTP_ROOT}`;
     }
 
     return '';
 }
 
-export function fileMapper(fileName: string, destination: string, request?: any): string {
-    let storageURL = getStorageURL(request);
+export function fileMapper(fileName: string, destination: string, opts?: any): string {
+    let storageURL = getStorageURL(opts);
     return `${storageURL}/${destination}/${fileName}`;
 }
 
-export function filesMapper(files: Array<string>, destination: string, request: any): Array<string> {
-    let storageURL = getStorageURL(request);
+export function filesMapper(files: Array<string>, destination: string, opts?: any): Array<string> {
+    let storageURL = getStorageURL(opts);
     return files.map((fileName) => {
         return `${storageURL}/${destination}/${fileName}`;
     });
@@ -53,6 +59,7 @@ export async function readRemoteFile(url: any, dest: any) {
             fs.mkdirSync(dest, { recursive: true });
         }
 
+        // TODO: Handle with caching strategy
         const fileName = `${+new Date}-${nanoid(16)}.tmp`;
         const fileLocation = `${dest}\\${fileName}`;
         const writeFileStream = fs.createWriteStream(fileLocation);
@@ -61,6 +68,9 @@ export async function readRemoteFile(url: any, dest: any) {
         let httpClient = null;
         if (remoteUrlFile.protocol.replace(':', '') === 'https') {
             httpClient = https;
+
+            // TODO: Do not by pass this options in production
+            httpClient.globalAgent.options.rejectUnauthorized = false;
         } else {
             httpClient = http;
         }

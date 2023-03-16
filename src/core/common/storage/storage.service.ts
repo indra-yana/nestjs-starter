@@ -1,17 +1,14 @@
 import { ConfigService } from '@nestjs/config';
-import { fileMapper } from 'src/core/common/storage/file-helper';
+import { createReadStream, createWriteStream, existsSync, mkdirSync, rmSync } from 'fs';
+import { extname, resolve } from 'path';
+import { fileMapper, STORAGE_DRIVER } from 'src/core/common/storage/file-helper';
+import { FtpExtendedService } from './ftp-extended.service';
+import { FtpService } from 'nestjs-ftp';
 import { Injectable } from '@nestjs/common';
 import { LocaleService } from '../locale/locale.service';
 import { nanoid } from 'nanoid';
 import { pipeline } from 'stream';
-import * as fs from 'fs';
-import * as path from 'path';
 import InvariantException from 'src/core/exceptions/InvariantException';
-
-export enum STORAGE_DRIVER {
-    LOCAL = 'local',
-    FTP = 'ftp',
-}
 
 type UploadResult = {
     fileName: string,
@@ -26,6 +23,8 @@ export class StorageService {
     constructor(
         private localeService: LocaleService,
         private configService: ConfigService,
+        private ftpService: FtpService,
+        private ftpExtendedService: FtpExtendedService,
     ) {
         const driver = this.configService.get('storage.driver');
         this.setDriver(driver);
@@ -36,33 +35,37 @@ export class StorageService {
         return this;
     }
 
-    public upload(file: Express.Multer.File, destination: string, request?: any): UploadResult {
-        let uploadResult: UploadResult = null;
+    public getDriver(): string {
+        return this.driver || STORAGE_DRIVER.LOCAL;
+    }
 
-        switch (this.driver) {
+    public async upload(file: Express.Multer.File, destination: string, request?: any): Promise<UploadResult> {
+        let uploadResult: any = null;
+
+        switch (this.getDriver()) {
             case STORAGE_DRIVER.FTP:
-                uploadResult = this.uploadToFtp(file, destination);
+                uploadResult = await this.uploadToFtp(file, destination);
                 break;
             case STORAGE_DRIVER.LOCAL:
             default:
-                uploadResult = this.uploadToLocalStorage(file, destination, request);
+                uploadResult = await this.uploadToLocalStorage(file, destination, request);
                 break;
         }
 
         return uploadResult;
     }
 
-    private uploadToLocalStorage(file: Express.Multer.File, destination: string, request?: any): UploadResult {
+    private async uploadToLocalStorage(file: Express.Multer.File, destination: string, request?: any): Promise<UploadResult> {        
         const { path: tempFile, originalname: name } = file;
         const fileName = this.createFileName(name);
-        const root = path.resolve(this.configService.get('storage.disks.local.root'));
-        const folder = `${root}/${destination}`;
+        const rootDir = resolve(this.configService.get('storage.disks.local.root'));
+        const destDirectory = `${rootDir}/${destination}`;
+        const finalDestination = `${destDirectory}/${fileName}`;
 
-        this.createFolder(folder);
+        this.createFolder(destDirectory);
 
-        let filePath = `${folder}/${fileName}`;
-        const readFileStream = fs.createReadStream(tempFile);
-        const writeFileStream = fs.createWriteStream(filePath);
+        const readFileStream = createReadStream(tempFile);
+        const writeFileStream = createWriteStream(finalDestination);
         pipeline(readFileStream, writeFileStream, (err) => {
             // Delete temporary file
             this.rmFile(tempFile);
@@ -77,17 +80,34 @@ export class StorageService {
 
         return {
             fileName,
-            url: fileMapper(fileName, destination, request),
+            url: fileMapper(fileName, destination, { 
+                driver: this.getDriver(), 
+                request,
+            }),
         }
     }
 
-    private uploadToFtp(file: Express.Multer.File, destination: string): UploadResult {
-        throw new Error('Not yet implemented!');
+    private async uploadToFtp(file: Express.Multer.File, destination: string): Promise<UploadResult> {
+        const { path: tempFile, originalname: name } = file;
+        const fileName = this.createFileName(name);
+        const rootDir = this.configService.get('storage.disks.ftp.root');
+        const destDirectory = `${rootDir}/${destination}`;
+        const finalDestination = `${destDirectory}/${fileName}`;
+
+        await this.ftpExtendedService.ensureDirectory(destDirectory);
+        await this.ftpService.upload(tempFile, finalDestination);
+
+        return {
+            fileName,
+            url: fileMapper(fileName, destination, { 
+                driver: this.getDriver() 
+            }),
+        }
     }
 
     private createFolder(folder: any): void {
-        if (!fs.existsSync(folder)) {
-            fs.mkdirSync(folder, { recursive: true });
+        if (!existsSync(folder)) {
+            mkdirSync(folder, { recursive: true });
         }
     }
 
@@ -96,11 +116,11 @@ export class StorageService {
     }
 
     private getFileExtension(fileName: string): string {
-        return path.extname(fileName);
+        return extname(fileName);
     }
 
     private rmFile(fileName: string) {
-        fs.rmSync(fileName, {
+        rmSync(fileName, {
             force: true,
         });
     }

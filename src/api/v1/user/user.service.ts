@@ -53,7 +53,7 @@ export class UserService {
 
         if (file && directUpload) {
             const request = this.getHttpRequest();
-            const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${request.user._uid}`, request);
+            const uploadedFile = await this.storageService.upload(file, `${FILE_PATH.AVATAR}/${request.user._uid}`, request);
             params.avatar = uploadedFile.fileName;
         }
 
@@ -67,7 +67,7 @@ export class UserService {
 
     async uploadAvatar(id: string, file: Express.Multer.File) {
         const request = this.getHttpRequest();
-        const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${id}`, request);
+        const uploadedFile = await this.storageService.upload(file, `${FILE_PATH.AVATAR}/${id}`, request);
 
         await this.patchOneBy(id, 'avatar', uploadedFile.fileName);
     }
@@ -85,7 +85,7 @@ export class UserService {
 
         if (file && directUpload) {
             const request = this.getHttpRequest();
-            const uploadedFile = this.storageService.upload(file, `${FILE_PATH.AVATAR}/${id}`, request);
+            const uploadedFile = await this.storageService.upload(file, `${FILE_PATH.AVATAR}/${id}`, request);
             params.avatar = uploadedFile.fileName;
         }
 

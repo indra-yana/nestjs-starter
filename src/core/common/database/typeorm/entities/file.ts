@@ -19,6 +19,9 @@ export class File extends BaseEntity<File> {
     @Column()
     type: string;
 
+    @Column()
+    driver: string;
+
     @CreateDateColumn()
     created_at: Date;
 
