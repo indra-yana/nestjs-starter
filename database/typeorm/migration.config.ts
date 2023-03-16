@@ -20,7 +20,7 @@ async function readMigrationFile(): Promise<any> {
     return migrationFiles;
 }
 
-const buildDataSource = async () => { 
+async function buildDataSource(): Promise<any> { 
     return new DataSource({
         type: "postgres",
         host: process.env.DB_PG_HOST,
