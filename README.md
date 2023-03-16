@@ -52,7 +52,7 @@ Trust, This will help you to decrease the development time process instead of bu
     - List of User Files
 - Modular system and clean architecture
 - Secure app HTTP headers using [helmet](https://helmetjs.github.io)
-- Multi storage file system (local, ftp)
+- Multi storage filesystem (local, ftp)
 - Mailer Sender
 - Fully coded with Typescript
 - etc
