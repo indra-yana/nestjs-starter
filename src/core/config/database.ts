@@ -23,7 +23,7 @@ export default registerAs('database', () => ({
             entities: [],
             synchronize: false,
             autoLoadEntities: true,
-            migrations: [__dirname + '/../common/database/typeorm/migrations/*.ts'],
+            migrations: [],
         }
     }
 }));
