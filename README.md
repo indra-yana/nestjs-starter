@@ -51,8 +51,8 @@ Trust, This will help you to decrease the development time process instead of bu
     - Preview
     - List of User Files
 - Modular system and clean architecture
-- Secure app HTTP headers using [helmet](https://helmetjs.github.io) [WIP]
-- FTP file upload [WIP]
+- Secure app HTTP headers using [helmet](https://helmetjs.github.io)
+- Multi storage file system (local, ftp)
 - Mailer Sender
 - Fully coded with Typescript
 - etc
@@ -61,14 +61,23 @@ Trust, This will help you to decrease the development time process instead of bu
 
 ```bash
 git clone https://github.com/indra-yana/nestjs-starter.git
+
 cp .env.example .env
+
 setup .env
+
 create database
+
 npm install
+
 npm run migration:up
+
 npm run start or 
+
 npm run start:dev           // to watch file changes like nodemon
-visit localhost:3000  
+
+visit localhost:3000
+
 done!      
 ```
 
