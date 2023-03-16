@@ -1,5 +1,5 @@
-import { dateColumn, idColumn } from "../general-column.migration";
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { idColumn, dateColumn } from "../general-column.migration";
 
 export class CreateUsersTable1678766771204 implements MigrationInterface {
 

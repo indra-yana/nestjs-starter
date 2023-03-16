@@ -1,11 +1,10 @@
 import 'dotenv/config';
-import { CreateFilesTable1678768412234 } from "../common/database/typeorm/migrations/1678768412234-create_files_table";
-import { CreateRolesTable1678767760332 } from "../common/database/typeorm/migrations/1678767760332-Create_Roles_Table";
-import { CreateUsersTable1678766771204 } from "../common/database/typeorm/migrations/1678766771204-create_users_table";
 import { DataSource } from "typeorm";
 import * as fs from 'fs';
 import * as path from 'path';
-import { AddDriverColumnToFilesTable1678939253903 } from '../common/database/typeorm/migrations/1678939253903-Add_Driver_Column_To_Files_Table';
+import { CreateUsersTable1678766771204 } from './migrations/1678766771204-Create_Users_Table';
+import { CreateRolesTable1678767760332 } from './migrations/1678767760332-Create_Roles_Table';
+import { CreateFilesTable1678768412234 } from './migrations/1678768412234-Create_Files_Table';
 
 function readFile() {
     const files = fs.readdirSync(path.resolve(`${__dirname}/../common/database/typeorm/migrations`))
@@ -46,7 +45,6 @@ const config = new DataSource({
         CreateUsersTable1678766771204,
         CreateRolesTable1678767760332,
         CreateFilesTable1678768412234,
-        AddDriverColumnToFilesTable1678939253903,
     ],
     migrationsTableName: 'typeorm_migrations',
     logging: false,

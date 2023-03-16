@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm"
-import { idColumn, dateColumn } from "../general-column.migration";
+import { dateColumn, idColumn } from "../general-column.migration";
 
 export class CreateFilesTable1678768412234 implements MigrationInterface {
 
@@ -34,6 +34,13 @@ export class CreateFilesTable1678768412234 implements MigrationInterface {
                         isNullable: true,
                         default: null,
                         type: "varchar",
+                    },
+                    {
+                        name: "driver",
+                        type: "varchar",
+                        length: "12",
+                        isNullable: true,
+                        default: null,
                     },
                     ...dateColumn(),
                 ],

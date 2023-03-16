@@ -18,9 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "typeorm-ts-node-esm -d ./src/core/config/typeorm-migration.ts",
+    "typeorm": "typeorm-ts-node-esm -d ./database/typeorm/migration.config.ts",
     "entity:create": "cd ./src/core/common/database/typeorm/entities && typeorm entity:create",
-    "migration:create": "cd ./src/core/common/database/typeorm/migrations && typeorm migration:create",
+    "migration:create": "cd ./database/typeorm/migrations && typeorm migration:create",
     "migration:up": "npm run typeorm migration:run",
     "migration:down": "npm run typeorm migration:revert",
     "migration:show": "npm run typeorm migration:show"
