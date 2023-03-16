@@ -26,8 +26,7 @@ export class StorageService {
         private ftpService: FtpService,
         private ftpExtendedService: FtpExtendedService,
     ) {
-        const driver = this.configService.get('storage.driver');
-        this.setDriver(driver);
+        this.setDriver(this.configService.get('storage.driver'));
     }
 
     public setDriver(driver?: string) {
