@@ -9,13 +9,12 @@ import {
   OneToMany,
   JoinTable,
   ManyToMany,
-  AfterLoad,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import BaseEntity from '../base.entity';
 import { File } from './file';
 import { Role } from './role';
-import { Exclude } from 'class-transformer';
+import { Exclude, Transform } from 'class-transformer';
 
 @Entity('users')
 export class User extends BaseEntity<User>  {
@@ -26,17 +25,14 @@ export class User extends BaseEntity<User>  {
 	@Column()
 	name: string;
 
-	@Column({
-		unique: true,
-	})
+	@Column({ unique: true })
 	username: string;
 
+	@Exclude()
 	@Column({ select: false })
 	password: string;
 
-	@Column({
-		unique: true,
-	})
+	@Column({ unique: true })
 	email: string;
 
 	@Column()
@@ -62,8 +58,8 @@ export class User extends BaseEntity<User>  {
 	@OneToMany(() => File, (file) => file.user)
     files: File[]
 
-	@Exclude()
-	@ManyToMany(() => Role, (role) => role.users)
+	@Transform(({ value }) => value.map((role: Role) => role.name))
+	@ManyToMany(() => Role)
     @JoinTable({ 
 		name: 'user_roles',
 		inverseJoinColumn: {
@@ -75,15 +71,6 @@ export class User extends BaseEntity<User>  {
 			referencedColumnName: 'id'
 		}
 	})
-	user_roles: Role[];
-
-	roles: Array<string>;
-
-	@AfterLoad()
-	mapUserRoles() {
-		if (this.user_roles) {
-			this.roles = this.user_roles.map((role: Role) => role.name);
-		}
-	}
+	roles: Role[];
 
 }

@@ -122,9 +122,10 @@ export class UserService {
                 created_at: true,
                 updated_at: true,
                 email_verified_at: true,
+                roles: true,
             },
             relations: {
-                user_roles: true,
+                roles: true,
             },
         });
 
@@ -181,7 +182,7 @@ export class UserService {
             },
             relations: {
                 files: true,
-                user_roles: true,
+                roles: true,
             },
             take: limit,
             skip
@@ -290,7 +291,7 @@ export class UserService {
         await this.roleService.find(role_id);
         
         const user = await this.find(user_id);
-        const isRoleExist = user.user_roles.find((role: Role) => role.id === role_id);
+        const isRoleExist = user.roles.find((role: Role) => role.id === role_id);
 
         if (isRoleExist) {
             throw new InvariantException({
@@ -302,7 +303,7 @@ export class UserService {
             id: role_id
         });
 
-        user.user_roles = [role];
+        user.roles = [role];
         await this.usersRepository.save(user);
         
         return true;

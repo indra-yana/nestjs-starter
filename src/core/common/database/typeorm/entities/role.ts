@@ -29,7 +29,7 @@ export class Role extends BaseEntity<Role> {
 	@DeleteDateColumn({ select: false })
 	deleted_at: Date;
 
-	@ManyToMany(() => User, (user) => user.user_roles)
+	@ManyToMany(() => User)
 	@JoinTable({
 		name: 'user_roles',
 		inverseJoinColumn: {
