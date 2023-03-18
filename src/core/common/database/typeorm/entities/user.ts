@@ -7,11 +7,15 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   OneToMany,
-  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  AfterLoad,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import BaseEntity from '../base.entity';
 import { File } from './file';
+import { Role } from './role';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User extends BaseEntity<User>  {
@@ -58,6 +62,28 @@ export class User extends BaseEntity<User>  {
 	@OneToMany(() => File, (file) => file.user)
     files: File[]
 
-	roles: Array<string> = ['root'];
+	@Exclude()
+	@ManyToMany(() => Role, (role) => role.users)
+    @JoinTable({ 
+		name: 'user_roles',
+		inverseJoinColumn: {
+			name: 'role_id',
+			referencedColumnName: 'id'
+		},
+		joinColumn: {
+			name: 'user_id',
+			referencedColumnName: 'id'
+		}
+	})
+	user_roles: Role[];
+
+	roles: Array<string>;
+
+	@AfterLoad()
+	mapUserRoles() {
+		if (this.user_roles) {
+			this.roles = this.user_roles.map((role: Role) => role.name);
+		}
+	}
 
 }

@@ -1,4 +1,4 @@
-import { Controller, Body, HttpCode, Post, UseGuards, Request, Get } from '@nestjs/common';
+import { Controller, Body, HttpCode, Post, UseGuards, Request, Get, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { LocalAuthGuard } from 'src/core/common/auth/guards/local.guard';
 import { PublicRoute } from 'src/core/decorator/public-route.decorator';
 import { AuthService } from '../../../core/common/auth/auth.service';
@@ -22,6 +22,7 @@ export class LoginController {
         }
     }
 	
+    @UseInterceptors(ClassSerializerInterceptor)
     @Get('whoami')
     async whoami(@Request() request: any) {
         try {			

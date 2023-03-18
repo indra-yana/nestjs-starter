@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import "reflect-metadata"
 import { ApiV1Module } from './api/v1/api.v1.module';
 import { AuthPassportModule } from './core/common/auth/auth.passport.module';
 import { ConfigModule } from '@nestjs/config';

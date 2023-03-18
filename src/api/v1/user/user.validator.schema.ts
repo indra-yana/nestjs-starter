@@ -39,3 +39,8 @@ export const updateUserSchema = Joi.object({
 export const validateIdSchema = Joi.object({
 	id: idSchema,
 });
+
+export const addUserRoleSchema = Joi.object({
+	user_id: idSchema,
+	role_id: idSchema,
+});

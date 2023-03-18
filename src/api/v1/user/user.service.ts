@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { joiValidationFormat } from 'src/core/helper/helper';
 import { LocaleService } from 'src/core/common/locale/locale.service';
 import { Repository } from 'typeorm';
+import { Role } from 'src/core/common/database/typeorm/entities/role';
+import { RoleService } from '../role/role.service';
 import { StorageService } from 'src/core/common/storage/storage.service';
 import { User } from 'src/core/common/database/typeorm/entities/user';
 import * as bcrypt from 'bcrypt';
@@ -22,6 +24,7 @@ export class UserService {
         private usersRepository: Repository<User>,
         private locale: LocaleService,
         private storageService: StorageService,
+        private roleService: RoleService,
     ) { }
 
     public setHttpRequest(request: any) {
@@ -119,7 +122,10 @@ export class UserService {
                 created_at: true,
                 updated_at: true,
                 email_verified_at: true,
-            }
+            },
+            relations: {
+                user_roles: true,
+            },
         });
 
         if (!result) {
@@ -175,6 +181,7 @@ export class UserService {
             },
             relations: {
                 files: true,
+                user_roles: true,
             },
             take: limit,
             skip
@@ -276,6 +283,29 @@ export class UserService {
                 error: joiValidationFormat(validations),
             });
         }
+    }
+
+    async addRole(payloads: any) {
+        const { user_id, role_id } = payloads;
+        await this.roleService.find(role_id);
+        
+        const user = await this.find(user_id);
+        const isRoleExist = user.user_roles.find((role: Role) => role.id === role_id);
+
+        if (isRoleExist) {
+            throw new InvariantException({
+                message: this.locale.t('The role already exist!'),
+            })
+        }
+
+        const role = new Role({
+            id: role_id
+        });
+
+        user.user_roles = [role];
+        await this.usersRepository.save(user);
+        
+        return true;
     }
 
 }
