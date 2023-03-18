@@ -9,6 +9,7 @@ import { RoleModule } from './role/role.module';
 import { UserModule } from './user/user.module';
 import { VerifyModule } from './verify/verify.module';
 import { FileModule } from './file/file.module';
+import { RolesGuard } from 'src/core/common/auth/guards/roles.guard';
 
 @Module({
     imports: [
@@ -25,6 +26,10 @@ import { FileModule } from './file/file.module';
         {
             provide: APP_GUARD,
             useClass: JwtAuthGuard,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: RolesGuard,
         },
     ]
 })

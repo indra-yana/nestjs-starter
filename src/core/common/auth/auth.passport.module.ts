@@ -14,10 +14,10 @@ import { UserModule } from 'src/api/v1/user/user.module';
         UserModule,
         PassportModule, 
         JwtModule.register({
-        secret: process.env.ACCESS_TOKEN_KEY,
-        signOptions: { 
-            expiresIn: process.env.ACCESS_TOKEN_AGE
-        },
+            secret: process.env.ACCESS_TOKEN_KEY,
+            signOptions: { 
+                expiresIn: process.env.ACCESS_TOKEN_AGE
+            },
         })
     ],
     exports: [AuthService],

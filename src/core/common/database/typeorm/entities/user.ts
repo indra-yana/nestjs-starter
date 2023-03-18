@@ -57,4 +57,7 @@ export class User extends BaseEntity<User>  {
 
 	@OneToMany(() => File, (file) => file.user)
     files: File[]
+
+	roles: Array<string> = ['root'];
+
 }

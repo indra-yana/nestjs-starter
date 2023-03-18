@@ -2,6 +2,7 @@ import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, P
 import { createUserSchema, updateUserSchema, validateIdSchema } from './user.validator.schema';
 import { FileInterceptor } from '@nest-lab/fastify-multer/src/lib/interceptors';
 import { localStorage } from 'src/core/common/storage/local.storage';
+import { Roles } from 'src/core/decorator/role.decorator';
 import { UserService } from './user.service';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 
@@ -75,6 +76,7 @@ export class UserController {
         }
     }
 
+    @Roles(['root'])
     @Get('list')
     async all(
         @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
