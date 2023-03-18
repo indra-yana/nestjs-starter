@@ -58,7 +58,7 @@ export class User extends BaseEntity<User>  {
 	@OneToMany(() => File, (file) => file.user)
     files: File[]
 
-	@Transform(({ value }) => value.map((role: Role) => role.name))
+	@Transform(({ value }) => value.map((role: Role) => role.name.toLowerCase()))
 	@ManyToMany(() => Role)
     @JoinTable({ 
 		name: 'user_roles',
