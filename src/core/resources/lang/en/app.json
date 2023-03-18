@@ -22,7 +22,8 @@
 		"something_wrong": "Oh no! something went wrong.",
 		"be_careful": "Be careful!",
 		"check_this_out": "Check this out!",
-		"rate_limit_exceeded": "To many request. Please retry in {after}"
+		"rate_limit_exceeded": "To many request. Please retry in {after}",
+		"role_exist": "The role already exist!"
 	},
 	"auth": {
 		"failed": "These credentials do not match our records.",

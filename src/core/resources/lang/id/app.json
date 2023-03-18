@@ -22,7 +22,8 @@
 		"something_wrong": "Oh tidak! ada yang salah.",
 		"be_careful": "Hati-hati!",
 		"check_this_out": "Lihat ini!",
-		"rate_limit_exceeded": "Terlalu banyak permintaan masuk. Silahkan coba lagi dalam {after}"
+		"rate_limit_exceeded": "Terlalu banyak permintaan masuk. Silahkan coba lagi dalam {after}",
+		"role_exist": "Role telah tersedia!"
 	},
 	"auth": {
 		"failed": "Identitas tersebut tidak cocok dengan data kami.",

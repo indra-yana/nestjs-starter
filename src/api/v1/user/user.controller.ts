@@ -1,5 +1,5 @@
-import { Body, ClassSerializerInterceptor, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { addUserRoleSchema, createUserSchema, updateUserSchema, validateIdSchema } from './user.validator.schema';
+import { Body, ClassSerializerInterceptor, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nest-lab/fastify-multer/src/lib/interceptors';
 import { localStorage } from 'src/core/common/storage/local.storage';
 import { Roles } from 'src/core/decorator/role.decorator';
@@ -112,6 +112,18 @@ export class UserController {
             this.validator.schema(addUserRoleSchema).validate(body);
 
             const result = await this.userService.addRole(body);
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @Delete('role/remove')
+    async removeRole(@Body() body: object) {
+        try {
+            this.validator.schema(addUserRoleSchema).validate(body);
+
+            const result = await this.userService.removeRole(body);
             return result;
         } catch (error) {
             throw error;

@@ -295,7 +295,7 @@ export class UserService {
 
         if (isRoleExist) {
             throw new InvariantException({
-                message: this.locale.t('The role already exist!'),
+                message: this.locale.t('app.message.role_exist'),
             })
         }
 
@@ -303,9 +303,21 @@ export class UserService {
             id: role_id
         });
 
-        user.roles = [role];
+        user.roles = [...user.roles, role];
         await this.usersRepository.save(user);
         
+        return true;
+    }
+
+    async removeRole(payloads: any) {
+        const { user_id, role_id } = payloads;
+        await this.roleService.find(role_id);
+        
+        const user = await this.find(user_id);
+        user.roles = user.roles.filter((role) => role.id !== role_id);
+
+        await this.usersRepository.save(user);
+
         return true;
     }
 
