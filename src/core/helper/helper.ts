@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 export function joiValidationFormat(errors: any): any {
     const errorKey = {};
-    errors.map((error) => {
+    errors.map((error: any) => {
         // const field = error.path.join('_');
         const field = [error.path[0]].join('_');
 
@@ -111,10 +111,6 @@ export function isFile(filePath: string) {
     if (!filestat) return false;
 
     return filestat.isFile();
-}
-
-export function filePathFormat(fileName: string, folder: string) {
-    return fileName ? process.env.APP_UPLOAD_PREVIEW.replace(':filename', fileName).replace(':folder', folder) : null;
 }
 
 export function roleFormat(role: string) {
