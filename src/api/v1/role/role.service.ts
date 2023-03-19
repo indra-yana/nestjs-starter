@@ -17,7 +17,8 @@ export class RoleService {
     ) {}
 
     async create(payload: any) {
-        const { name } = payload;
+        let { name } = payload;
+        name = name.toUpperCase()
 
         await this.checkNameExists(name);
 

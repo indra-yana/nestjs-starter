@@ -116,3 +116,7 @@ export function isFile(filePath: string) {
 export function filePathFormat(fileName: string, folder: string) {
     return fileName ? process.env.APP_UPLOAD_PREVIEW.replace(':filename', fileName).replace(':folder', folder) : null;
 }
+
+export function roleFormat(role: string) {
+    return role.toLowerCase().replace(/\s+/g, "_");
+}

@@ -15,6 +15,7 @@ import BaseEntity from '../base.entity';
 import { File } from './file';
 import { Role } from './role';
 import { Exclude, Transform } from 'class-transformer';
+import { roleFormat } from 'src/core/helper/helper';
 
 @Entity('users')
 export class User extends BaseEntity<User>  {
@@ -58,7 +59,7 @@ export class User extends BaseEntity<User>  {
 	@OneToMany(() => File, (file) => file.user)
     files: File[]
 
-	@Transform(({ value }) => value.map((role: Role) => role.name.toLowerCase()))
+	@Transform(({ value }) => value.map((role: Role) => roleFormat(role.name)))
 	@ManyToMany(() => Role)
     @JoinTable({ 
 		name: 'user_roles',
