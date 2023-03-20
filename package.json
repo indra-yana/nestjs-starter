@@ -18,12 +18,16 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "typeorm-ts-node-esm -d ./database/typeorm/migration.config.ts",
+    "typeorm": "typeorm-ts-node-esm",
     "entity:create": "cd ./src/core/common/database/typeorm/entities && typeorm entity:create",
+    "seed:create": "cd ./database/typeorm/seeders && typeorm migration:create",
+    "seed:up": "npm run typeorm migration:run -- -d ./database/typeorm/seeders.config.ts",
+    "seed:down": "npm run typeorm migration:revert -- -d ./database/typeorm/seeders.config.ts",
+    "seed:show": "npm run typeorm migration:show -- -d ./database/typeorm/seeders.config.ts",
     "migration:create": "cd ./database/typeorm/migrations && typeorm migration:create",
-    "migration:up": "npm run typeorm migration:run",
-    "migration:down": "npm run typeorm migration:revert",
-    "migration:show": "npm run typeorm migration:show"
+    "migration:up": "npm run typeorm migration:run -- -d ./database/typeorm/migration.config.ts",
+    "migration:down": "npm run typeorm migration:revert -- -d ./database/typeorm/migration.config.ts",
+    "migration:show": "npm run typeorm migration:show -- -d ./database/typeorm/migration.config.ts"
   },
   "dependencies": {
     "@fastify/helmet": "^10.1.0",
