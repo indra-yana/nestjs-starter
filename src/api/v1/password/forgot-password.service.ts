@@ -59,8 +59,8 @@ export class ForgotPasswordService {
         await this.userService.findOneBy('email', email);
         
         const expires = new Date();
-        let feURL = this.configService.get('email.forgot_password.frontend_url');
-        let expireMinutes = expires.getMinutes() + this.configService.get('email.forgot_password.link_expire_minutes');
+        const expireMinutes = expires.getMinutes() + this.configService.get('email.forgot_password.link_expire_minutes');
+        const feURL = this.configService.get('email.forgot_password.frontend_url');
         
         expires.setMinutes(expireMinutes);
         const expiresMs = expires.getTime();
