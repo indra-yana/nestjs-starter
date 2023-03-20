@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { DataSource } from "typeorm";
 import { resolve } from 'path';
-import { readMigrationFile } from './file-loader';
+import { loadClassFile } from './file-loader';
 
 async function buildDataSource(): Promise<any> { 
     return new DataSource({
@@ -11,7 +11,7 @@ async function buildDataSource(): Promise<any> {
         username: process.env.DB_PG_USERNAME,
         password: process.env.DB_PG_PASSWORD,
         database: process.env.DB_PG_DATABASE,
-        migrations: await readMigrationFile(resolve(`${__dirname}/migrations`)),
+        migrations: await loadClassFile(resolve(`${__dirname}/migrations`)),
         migrationsTableName: 'typeorm_migrations',
         logging: true,
         synchronize: false,
