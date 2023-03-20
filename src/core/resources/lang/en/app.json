@@ -46,6 +46,7 @@
 		"sent": "We have emailed your password reset link!",
 		"throttled": "Please wait in {after} before retrying.",
 		"token": "Password reset token is invalid.",
+		"token_notfound": "Reset password token not found.",
 		"user": "We can't find a user with that email address.",
 		"expired": "Password reset link expired.",
 		"notification": "Password Reset Notification.",

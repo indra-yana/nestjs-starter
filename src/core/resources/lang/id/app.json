@@ -46,6 +46,7 @@
 		"sent": "Kami telah mengirim surel yang berisi tautan untuk mereset kata sandi Anda!",
 		"throttled": "Harap tunggu dalam {after} sebelum mencoba lagi.",
 		"token": "Token pengaturan ulang kata sandi tidak sah.",
+		"token_notfound": "Token pengaturan ulang kata sandi tidak ditemukan.",
 		"user": "Kami tidak dapat menemukan pengguna dengan alamat surel tersebut.",
 		"expired": "Tautan setel ulang kata sandi telah kadaluarsa.",
 		"notification": "Pemberitahuan Setel Ulang Kata Sandi.",

@@ -1,4 +1,4 @@
-import { AuthService, LINK_TYPE } from '../../../core/common/auth/auth.service';
+import { AuthService } from '../../../core/common/auth/auth.service';
 import { Controller, Body, Post, Request } from '@nestjs/common';
 import { ForgotPasswordService } from './forgot-password.service';
 import { MailerService } from 'src/core/common/mailer/mailer.service';
@@ -26,10 +26,8 @@ export class PasswordController {
     @Post('email')
     async sendResetPasswordLink(@Body('email') email: string) {
         try {
-            const link = await this.authService.generateLink(email, LINK_TYPE.FORGOT_PASSWORD);
-            this.mailerService.sendForgotPasswordEmail(email, link);
-            
-            return link;
+            const link = await this.forgotPasswordService.createPasswordResetLink(email);
+            this.mailerService.sendForgotPasswordEmail(email, link);            
         } catch (error) {
             throw error;
         }
