@@ -1,7 +1,9 @@
-import { AuthService, LINK_TYPE } from 'src/core/common/auth/auth.service';
-import { Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Post, Req } from '@nestjs/common';
 import { MailerService } from 'src/core/common/mailer/mailer.service';
 import { VerifyService } from './verify.service';
+import { ValidatorService } from 'src/core/common/validator/validator.service';
+import { verifyAccountSchema } from './verify.validator.schema';
+import { Put } from '@nestjs/common/decorators';
 
 @Controller({
     path: 'auth/verify',
@@ -9,9 +11,9 @@ import { VerifyService } from './verify.service';
 })
 export class VerifyController {
     constructor(
-        private authService: AuthService,
         private verifyService: VerifyService,
         private mailerService: MailerService,
+        private validator: ValidatorService,
     ) { }
 
     @Post('resend')
@@ -19,7 +21,7 @@ export class VerifyController {
         try {
             const user = request.user;
             const email = user.email;
-            const link = await this.authService.generateLink(email, LINK_TYPE.VERIFY);
+            const link = await this.verifyService.createVerificationLink(email);
 
             if (link.url !== null) {
                 this.mailerService.sendVerificationEmail(email, link);
@@ -31,14 +33,17 @@ export class VerifyController {
         }
     }
 
-    @Get(':email/:token')
-    async verifyAccount(@Req() request: any, @Param('email') email: string, @Param('token') token: string) {
+    @Put()
+    async verifyAccount(@Body() body: any) {
         try {
-            const result = await this.verifyService.verify({ email, token });
+            this.validator.schema(verifyAccountSchema).validate(body);
+            
+            const result = await this.verifyService.verify(body);
             if (!result.already_verify) {
-                this.mailerService.sendWelcomeEmail(email, result);
+                this.mailerService.sendWelcomeEmail(body.email, result);
             }
-
+            
+            delete result.already_verify;
             return result;
         } catch (error) {
             throw error;

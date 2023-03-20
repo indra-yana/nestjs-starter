@@ -1,20 +1,13 @@
-import { ConfigService } from '@nestjs/config';
-import { createToken, joiValidationFormat } from 'src/core/helper/helper';
 import { Injectable } from '@nestjs/common';
+import { joiValidationFormat } from 'src/core/helper/helper';
 import { JwtService } from '@nestjs/jwt';
 import { LocaleService } from 'src/core/common/locale/locale.service';
 import { UserService } from '../../../api/v1/user/user.service';
 import * as bcrypt from 'bcrypt'; 
 import AuthenticationException from 'src/core/exceptions/AuthenticationException';
 import ForbidenException from 'src/core/exceptions/ForbidenException';
-import InvariantException from 'src/core/exceptions/InvariantException';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import validateEmail from 'filter-validate-email';
-
-export enum LINK_TYPE {
-    FORGOT_PASSWORD = 1,
-    VERIFY = 2,
-}
 
 @Injectable()
 export class AuthService {
@@ -22,8 +15,7 @@ export class AuthService {
         private userService: UserService, 
         private jwtService: JwtService, 
         private locale: LocaleService,
-        private configService: ConfigService,
-    ){ }
+    ) { }
 
     credentialField(value: string): string {
         return validateEmail(value, false) ? 'email' : 'username';
@@ -32,49 +24,6 @@ export class AuthService {
     getCredentials(credential: string): object {
         return {
             [this.credentialField(credential)]: credential,
-        };
-    }
-
-    async generateLink(email: string, type: LINK_TYPE) {
-        const user = await this.userService.findOneBy('email', email);
-        
-        const expires = new Date();
-        let feURL = '';
-        let expireMinutes = 0;
-        let message = '';
-
-        if (type == LINK_TYPE.FORGOT_PASSWORD) {
-            expireMinutes = expires.getMinutes() + this.configService.get('email.forgot_password.link_expire_minutes');
-            feURL = this.configService.get('email.forgot_password.frontend_url');
-            message = this.locale.t('app.password.sent');
-        } else if (type == LINK_TYPE.VERIFY) {
-            if (user.email_verified_at !== null) {
-                return { 
-                    message: this.locale.t('app.auth.email_verified'),
-                    email_verified_at: user.email_verified_at,
-                    url: null,
-                }
-            }
-
-            expireMinutes = expires.getMinutes() + this.configService.get('email.verify.link_expire_minutes');
-            feURL = this.configService.get('email.verify.frontend_url');
-            message = this.locale.t('app.verify.sent');
-        } else {
-            throw new InvariantException({ message: 'Invalid reset link type!' });
-        }
-        
-        expires.setMinutes(expireMinutes);
-        const expiresMs = expires.getTime();
-        const token = `${expiresMs}#${createToken(email, expiresMs)}`;        
-        const encodedToken = encodeURIComponent(token);
-        const encodedEmail = encodeURIComponent(email);
-
-        const url = `${feURL}/${encodedToken}?email=${encodedEmail}`;
-
-        // TODO: Save token to database
-        return {
-            message,
-            url
         };
     }
 

@@ -1,5 +1,5 @@
 import { AuthService } from '../../../core/common/auth/auth.service';
-import { Controller, Body, Post, Request } from '@nestjs/common';
+import { Controller, Body, Post, Request, Put } from '@nestjs/common';
 import { ForgotPasswordService } from './forgot-password.service';
 import { MailerService } from 'src/core/common/mailer/mailer.service';
 
@@ -33,7 +33,7 @@ export class PasswordController {
         }
     }
 
-    @Post('reset')
+    @Put('reset')
     async resetPassword(@Body() payload: any) {
         try {
             return await this.forgotPasswordService.resetPassword(payload);

@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { createToken, joiValidationFormat } from 'src/core/helper/helper';
 import { Injectable } from '@nestjs/common';
 import { LocaleService } from 'src/core/common/locale/locale.service';
@@ -8,17 +9,14 @@ import ValidationException from 'src/core/exceptions/ValidationException';
 export class VerifyService {
     constructor(
         private userService: UserService,
-        private locale: LocaleService
+        private locale: LocaleService,
+        private configService: ConfigService,
     ) {}
 
     async verify(payload: any) {
-        const { email, token } = payload;
-
-        // TODO: Check token from database for comparison
-        // Determine if the token matches with specified email and expires timestamp.
-        const tokenPart = token.split('#');
-        const expires = tokenPart[0];
-        const matches = tokenPart[1] === createToken(email, expires);
+        const { email, token, expire } = payload;
+        const expires = parseInt(expire);
+        const matches = token === createToken(email, expires);
 
         if (!matches) {
             throw new ValidationException({
@@ -61,6 +59,35 @@ export class VerifyService {
             email_verified_at: result.email_verified_at,
             name: result.name,
             already_verify: false,
+        };
+    }
+
+    async createVerificationLink(email: string) {
+        const user = await this.userService.findOneBy('email', email);
+
+        if (user.email_verified_at !== null) {
+            return { 
+                message: this.locale.t('app.auth.email_verified'),
+                email_verified_at: user.email_verified_at,
+                url: null,
+            }
+        }
+        
+        const expires = new Date();
+        const expireMinutes = expires.getMinutes() + this.configService.get('email.verify.link_expire_minutes');
+        const feURL = this.configService.get('email.verify.frontend_url');
+
+        expires.setMinutes(expireMinutes);
+        const expiresMs = expires.getTime();
+        const token = createToken(email, expiresMs);  
+        const encodedToken = encodeURIComponent(token);
+        const encodedEmail = encodeURIComponent(email);
+
+        const url = `${feURL}/${expiresMs}/${encodedToken}?email=${encodedEmail}`;
+
+        return {
+            message: this.locale.t('app.verify.sent'),
+            url
         };
     }
 

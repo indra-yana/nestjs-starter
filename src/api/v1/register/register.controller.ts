@@ -1,5 +1,4 @@
-import { AuthService, LINK_TYPE } from 'src/core/common/auth/auth.service';
-import { Body, Controller, Post, Get, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createUserSchema } from '../user/user.validator.schema';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
 import { localStorage } from 'src/core/common/storage/local.storage';
@@ -7,6 +6,7 @@ import { MailerService } from 'src/core/common/mailer/mailer.service';
 import { PublicRoute } from 'src/core/decorator/public-route.decorator';
 import { UserService } from '../user/user.service';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
+import { VerifyService } from '../verify/verify.service';
 
 @Controller({
     path: 'auth',
@@ -18,7 +18,7 @@ export class RegisterController {
         private validator: ValidatorService,
         private mailerService: MailerService,
         private userService: UserService,
-        private authService: AuthService,
+        private verifyService: VerifyService,
     ) { }
 
     @UseInterceptors(FileInterceptor('avatar', {
@@ -35,7 +35,7 @@ export class RegisterController {
 
             const user = await this.userService.create(body, null, false);
             const email = body.email
-            const link = await this.authService.generateLink(email, LINK_TYPE.VERIFY);
+            const link = await this.verifyService.createVerificationLink(email);
 
             if (link.url !== null) {
                 this.mailerService.sendVerificationEmail(email, link);
