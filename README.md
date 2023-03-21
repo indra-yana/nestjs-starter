@@ -23,16 +23,16 @@ Trust, This will help you to decrease the development time process instead of bu
 
 ### Dev Stack
 
-- @nestjs v9.0.x
-- @nestjs/platform-fastify v9.3.x
+- Nestjs v9.x
+- Nestjs platform-fastify v9.x
 - Passport Authentication - (passport-local, passport-jwt)
-- Postgres Database
+- Postgres
 - Type ORM
 - Multi Language Using [nestjs-i18n](https://nestjs-i18n.com) 
 - Joi Validation
 - Handlebars (View Engine)
 - Node Mailer
-- Nestjs fastify-multer - uploading file
+- Multer - uploading file
 - and more
 
 ## Features
@@ -43,7 +43,7 @@ Trust, This will help you to decrease the development time process instead of bu
     - Forgot Password
     - Verify Account
     - Password Confirmation
-- User Management (CRUD)
+- User Management (CRUD), add or remove role
 - Role Management (CRUD)
 - File Management 
     - Upload
@@ -55,6 +55,8 @@ Trust, This will help you to decrease the development time process instead of bu
 - Multi storage filesystem (local, ftp)
 - Mailer Sender
 - Fully coded with Typescript
+- Database Migration using typeorm migration
+- Database seeders
 - etc
 
 ### Installation
@@ -72,17 +74,115 @@ npm install
 
 npm run migration:up
 
-npm run start or 
+npm run seed:up
 
-npm run start:dev           // to watch file changes like nodemon
+npm run start 
+or 
+npm run start:dev     // to watch file changes
 
 visit localhost:3000
 
 done!      
 ```
 
-### API Spec
-#### TODO
+### Command
+
+```bash
+npm run entity:create entity-name             // Create typeorm entity
+
+npm run seed:create seeder-name               // Create seeder file. ex: npm run seed:create Users_Table_Seeder [Title case format]
+npm run seed:up                               // Run seeder file
+npm run seed:down                             // Revert seeder file
+npm run seed:show                             // Show seeder file
+
+npm run migration:create migration-name       // Create migration file. ex: npm run seed:create Create_Users_Table [Title case format]
+npm run migration:up                          // Run migration file
+npm run migration:down                        // Revert migration file
+npm run migration:show                        // Show migration file
+```
+
+## API SPEC
+
+### Base URL :
+
+```bash
+http://localhost:3000
+```
+
+### General Header :
+
+```json
+{
+    "Content-Type": "application/json",     // Optional for some route
+    "Accept": "application/json",           // Accept response as json
+    "Accept-Language": "id",                // id|en
+    "Authorization": "bearer_token"         // for authenticated route
+}
+```
+
+### General Params :
+```bash
+  # Query params for pagination
+  # ex: /api/v1/user/list?page=1&limit=10
+
+  page: numeric
+  limit: numeric
+```
+
+### Response :
+
+Success Response :
+
+```json
+{
+    "code": 200,
+    "message": "Success Message",
+    "data": {
+        "success_data"
+    }
+}
+```
+
+Error Response :
+
+```json
+{
+    "code": 500,
+    "message": "Error Message",
+    "error": {
+        "error_data"
+    }
+}
+```
+
+## Available REST API
+
+| Name | Method | Path |
+| --- | --- | --- | 
+| Login | POST | `/api/v1/auth/login` |
+| Register | POST | `/api/v1/auth/register` |
+| Password Request | POST | `/api/v1/auth/password/email` |
+| Password Reset | PUT | `/api/v1/auth/password/reset` |
+| Password Confirmation | POST | `/api/v1/auth/password/confirm` |
+| Verify Resend | POST | `/api/v1/auth/verify/resend` |
+| Verify | PUT | `/api/v1/auth/verify` |
+| Whoami | GET | `/api/v1/auth/whoami` |
+| Create User | POST | `/api/v1/user/create` |
+| Update User | PUT | `/api/v1/user/update` |
+| Delete User | DELETE | `/api/v1/user/delete` |
+| Add User Role | POST | `/api/v1/user/role/add` |
+| Remove User Role | DELETE | `/api/v1/user/role/remove` |
+| Show User | GET | `/api/v1/user/show` |
+| List User | GET | `/api/v1/user/list` |
+| Create Role | POST | `/api/v1/role/create` |
+| Update Role | PUT | `/api/v1/role/update` |
+| Delete Role | DELETE | `/api/v1/role/delete` |
+| Show Role | GET | `/api/v1/role/show` |
+| List Role | GET | `/api/v1/role/list` |
+| Upload | POST | `/api/v1/file/upload` |
+| Download | GET | `/api/v1/file/download/{file_id}` |
+| Preview | GET | `/api/v1/file/preview/{file_id}` |
+| User Files | GET | `/api/v1/file/user-files` |
 
 ### Author
 
