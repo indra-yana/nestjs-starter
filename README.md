@@ -6,7 +6,7 @@
   </a>
 </div>
 
-<h3 align="center">A NEST JS SKELETON BACKEND REST API FOR STARTER KIT PROJECT </h3>
+<h3 align="center">A [NEST JS](http://nestjs.com/) SKELETON BACKEND REST API FOR STARTER KIT PROJECT </h3>
 
 <div align="center">
   <a href="https://nestjs.com" target="_blank">
@@ -101,15 +101,15 @@ npm run migration:down                        // Revert migration file
 npm run migration:show                        // Show migration file
 ```
 
-## API SPEC
+### API SPEC
 
-### Base URL :
+#### Base URL :
 
 ```bash
 http://localhost:3000
 ```
 
-### General Header :
+#### General Header :
 
 ```json
 {
@@ -120,7 +120,7 @@ http://localhost:3000
 }
 ```
 
-### General Params :
+#### General Params :
 ```bash
   # Query params for pagination
   # ex: /api/v1/user/list?page=1&limit=10
@@ -129,7 +129,7 @@ http://localhost:3000
   limit: numeric
 ```
 
-### Response :
+#### Response :
 
 Success Response :
 
@@ -155,7 +155,7 @@ Error Response :
 }
 ```
 
-## Available REST API
+#### Available REST API
 
 | Name | Method | Path |
 | --- | --- | --- | 
