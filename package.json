@@ -1,8 +1,8 @@
 {
   "name": "nest-starter",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "nest js skeleton for starter kit project.",
+  "author": "Indra Muliana",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
