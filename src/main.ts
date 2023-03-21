@@ -17,7 +17,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new HttpResponseInterceptor());
 
   await app.listen(process.env.APP_PORT || 3000);
-  console.log(`Backend server running on: ${await app.getUrl()}`);
+  console.log(`🚀🚀🚀 \x1b[36m Backend server running on: ${await app.getUrl()}`);
 }
 
 bootstrap();
