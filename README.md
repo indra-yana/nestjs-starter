@@ -41,10 +41,17 @@ Trust, this project will help you to cut development time process instead of bui
     - Login
     - Register
     - Forgot Password
+    - Reset Password
+    - Email Verification
     - Verify Account
     - Password Confirmation
-- User Management (CRUD), add or remove role
-- Role Management (CRUD)
+    - Whoami
+- User Management 
+    - CRUD
+    - Add User Role
+    - Remove User role
+- Role Management 
+    - CRUD
 - File Management 
     - Upload
     - Download
