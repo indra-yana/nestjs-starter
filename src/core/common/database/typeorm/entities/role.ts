@@ -1,4 +1,5 @@
 import {
+	BeforeInsert,
 	Column,
 	CreateDateColumn,
 	DeleteDateColumn,
@@ -42,4 +43,9 @@ export class Role extends BaseEntity<Role> {
 		}
 	})
 	users: User[];
+
+	@BeforeInsert()
+    formatName() {
+        this.name = this.name.toUpperCase();
+    }
 }
