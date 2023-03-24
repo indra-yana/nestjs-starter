@@ -1,9 +1,10 @@
 import { Body, Controller, Post, Req } from '@nestjs/common';
 import { MailerService } from 'src/core/common/mailer/mailer.service';
-import { VerifyService } from './verify.service';
+import { Put } from '@nestjs/common/decorators';
+import { Throttle } from '@nestjs/throttler';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 import { verifyAccountSchema } from './verify.validator.schema';
-import { Put } from '@nestjs/common/decorators';
+import { VerifyService } from './verify.service';
 
 @Controller({
     path: 'auth/verify',
@@ -16,6 +17,7 @@ export class VerifyController {
         private validator: ValidatorService,
     ) { }
 
+    @Throttle(5, 60)
     @Post('resend')
     async resendEmailVerification(@Req() request: any) {
         try {

@@ -2,6 +2,7 @@ import { AuthService } from '../../../core/common/auth/auth.service';
 import { Controller, Body, Post, Request, Put } from '@nestjs/common';
 import { ForgotPasswordService } from './forgot-password.service';
 import { MailerService } from 'src/core/common/mailer/mailer.service';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller({
     path: 'auth/password',
@@ -23,6 +24,7 @@ export class PasswordController {
         }
     }
 
+    @Throttle(5, 60)
     @Post('email')
     async sendResetPasswordLink(@Body('email') email: string) {
         try {
