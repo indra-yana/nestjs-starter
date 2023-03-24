@@ -42,6 +42,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.3.10",
     "@nestjs/platform-fastify": "^9.3.10",
+    "@nestjs/throttler": "^4.0.0",
     "@nestjs/typeorm": "^9.0.1",
     "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.1.0",

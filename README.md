@@ -66,6 +66,7 @@ Trust, this project will help you to cut development time process instead of bui
 - Fully coded with Typescript
 - Database Migration using typeorm migration
 - Database seeders
+- Rate limiter
 - etc
 
 ### Installation
