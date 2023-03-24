@@ -25,12 +25,14 @@ Trust, this project will help you to cut development time process instead of bui
 
 - Nestjs v9.x
 - Nestjs platform-fastify v9.x
-- Passport Authentication - (passport-local, passport-jwt)
+- Passport Authentication 
+    - passport-local
+    - passport-jwt
 - Postgres
 - Type ORM
 - Multi Language Using [nestjs-i18n](https://nestjs-i18n.com) 
 - Joi Validation
-- Handlebars (View Engine)
+- Handlebars (View engine for email templating)
 - Node Mailer
 - Multer - uploading file
 - and more
@@ -83,9 +85,13 @@ npm run migration:up
 
 npm run seed:up
 
-npm run start 
-or 
-npm run start:dev     // to watch file changes
+npm run start           // start development server
+ 
+npm run start:dev       // start development server in watch mode
+
+npm run build           // build the project
+
+npm run start:prod      // start production server
 
 visit localhost:3000
 
@@ -105,7 +111,10 @@ npm run seed:show                             // Show seeder file
 npm run migration:create migration-name       // Create migration file. ex: npm run seed:create Create_Users_Table [Title case format]
 npm run migration:up                          // Run migration file
 npm run migration:down                        // Revert migration file
-npm run migration:show                        // Show migration file
+
+npm run build                                 // build the project
+npm run start:dev                             // start development server
+npm run start:prod                            // start development server
 ```
 
 ### API SPEC
