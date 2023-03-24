@@ -205,6 +205,10 @@ Error Response :
 
 - [Indra Muliana](https://github.com/indra-yana) - <a href="mailto:indra.ndra26@gmail.com" target="_blank">indra.ndra26@gmail.com</a>
 
+### Postman Collection
+
+- <a href="mailto:indra.ndra26@gmail.com" target="_blank">Mail Me</a>
+
 ### License
 
 Licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
