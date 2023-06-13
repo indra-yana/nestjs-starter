@@ -7,4 +7,9 @@ export default registerAs('auth', () => ({
         access_token_age: process.env.ACCESS_TOKEN_AGE || '1d',
         refresh_token_age: process.env.REFRESH_TOKEN_AGE || '60d',
     },
+
+    google: {
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+    }
 }));

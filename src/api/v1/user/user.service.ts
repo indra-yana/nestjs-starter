@@ -2,7 +2,7 @@ import { FILE_PATH } from 'src/core/common/storage/file-helper';
 import { getSkip, paginate, PagingQuery } from 'src/core/helper/pagination';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { joiValidationFormat } from 'src/core/helper/helper';
+import { joiValidationFormat, randomName, randomPassword, randomUserName } from 'src/core/helper/helper';
 import { LocaleService } from 'src/core/common/locale/locale.service';
 import { Repository } from 'typeorm';
 import { Role } from 'src/core/common/database/typeorm/entities/role';
@@ -56,7 +56,7 @@ export class UserService {
 
         if (file && directUpload) {
             const request = this.getHttpRequest();
-            const uploadedFile = await this.storageService.upload(file, `${FILE_PATH.AVATAR}/${request.user._uid}`, request);
+            const uploadedFile = await this.storageService.upload(file, `${FILE_PATH.AVATAR}/${request.user.id}`, request);
             params.avatar = uploadedFile.fileName;
         }
 
@@ -319,6 +319,40 @@ export class UserService {
         await this.usersRepository.save(user);
 
         return true;
+    }
+
+    async findOrCreate(payloads: any): Promise<User> {
+        const { 
+            name = randomName(), 
+            username = randomUserName(), 
+            password = randomPassword(),
+            email, 
+            picture: avatar,
+            provider, 
+        } = payloads;
+
+        let user = await this.usersRepository.findOne({
+            where: { 
+                email,
+            },
+            relations: {
+                roles: true,
+            },
+        });
+
+        if (user) {
+            return user;
+        }
+
+        user = await this.usersRepository.save(new User({
+            name,
+            username,
+            email,
+            password,
+            avatar,
+        }));
+
+        return await this.find(user.id);
     }
 
 }

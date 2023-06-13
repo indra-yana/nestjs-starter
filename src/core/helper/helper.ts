@@ -1,6 +1,7 @@
 import * as crypto from 'crypto';
 import * as path from 'path';
 import * as fs from 'fs';
+import { nanoid } from 'nanoid';
 
 export function joiValidationFormat(errors: any): any {
     const errorKey = {};
@@ -115,4 +116,16 @@ export function isFile(filePath: string) {
 
 export function roleFormat(role: string) {
     return role.toLowerCase().replace(/\s+/g, "_");
+}
+
+export function randomName(prefix = '') {
+    return `${prefix}${nanoid(8)}`;
+}
+
+export function randomUserName() {
+    return `user${nanoid(8)}`;
+}
+
+export function randomPassword() {
+    return nanoid(12);
 }

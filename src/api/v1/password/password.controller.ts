@@ -18,7 +18,7 @@ export class PasswordController {
     @Post('confirm')
     async confirmPassword(@Request() request: any, @Body('password') password: string) {
         try {			
-            return await this.authService.confirmPassword(request.user._uid, password);
+            return await this.authService.confirmPassword(request.user.id, password);
         } catch (error) {
             throw error;
         }

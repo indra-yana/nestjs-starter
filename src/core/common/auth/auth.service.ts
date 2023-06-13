@@ -8,6 +8,7 @@ import AuthenticationException from 'src/core/exceptions/AuthenticationException
 import ForbidenException from 'src/core/exceptions/ForbidenException';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import validateEmail from 'filter-validate-email';
+import { User } from '../database/typeorm/entities/user';
 
 @Injectable()
 export class AuthService {
@@ -61,16 +62,12 @@ export class AuthService {
             });
         }
 
-        return {
-            _uid: result.id,
-            username: result.username,
-            email: result.email,
-        }
+        return result;
     }
 
-    async jwtAuth(user: any) {
+    async jwtAuth(user: User) {
         const payload = { 
-            _uid: user._uid, 
+            _uid: user.id, 
             username: user.username, 
             email: user.email 
         }
@@ -81,6 +78,13 @@ export class AuthService {
                 // refreshToken: null,
             }
         }
+    }
+
+    async socialAuth(data: any, provider: string) {
+        return await this.userService.findOrCreate({
+            ...data,
+            provider,
+        });
     }
 
     verifyJwt(token: string) {

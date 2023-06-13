@@ -29,7 +29,7 @@ export class FileController {
                 file
             });
 
-            body.userId = request.user._uid;
+            body.userId = request.user.id;
             const result = await this.fileService
                 .setHttpRequest(request)
                 .create(body, file);
