@@ -1,7 +1,6 @@
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/core/common/auth/auth.service';
 import { ExecutionContext, Injectable } from '@nestjs/common';
-import { FastifyRequest } from 'fastify';
 import { IS_PUBLIC_KEY } from 'src/core/decorator/public-route.decorator';
 import { Reflector } from '@nestjs/core';
 
@@ -20,16 +19,6 @@ export class JwtAuthGuard extends AuthGuard('jwt_auth') {
             ]);
 
             if (isPublic) {
-                return true;
-            }
-
-            const request = context.switchToHttp().getRequest<FastifyRequest>();
-            const auth = request.headers['authorization'];
-            const token = auth.split(' ')[1];
-    
-            const user = this.authService.verifyJwt(token);
-            if (user) {
-                request['user'] = user;
                 return true;
             }
 
