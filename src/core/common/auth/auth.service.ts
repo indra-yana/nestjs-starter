@@ -14,9 +14,12 @@ import validateEmail from 'filter-validate-email';
 
 export type GoogleAuthResponse = {
     email: string;
+    name: string;
     given_name: string;
     family_name: string;
     picture: string;
+    email_verified: boolean;
+    locale: string;
 }
 
 export type MicrosoftAuthResponse = {
@@ -108,18 +111,20 @@ export class AuthService {
                 const googleUserData: GoogleAuthResponse = data as GoogleAuthResponse;
 
                 return await this.userService.findOrCreate({
-                    name: googleUserData.given_name,
+                    name: googleUserData.name,
                     email: googleUserData.email,
                     avatar: googleUserData.picture,
-                    provider,
+                    email_verified_at: googleUserData?.email_verified ? new Date() : null,
+                    // provider,
                 });
             case SOCIAL_AUTH.MICROSOFT:
                 const msUserData: MicrosoftAuthResponse = data as MicrosoftAuthResponse;
 
                 return await this.userService.findOrCreate({
-                    name: msUserData.givenName || msUserData.surname || msUserData.displayName,
+                    name: msUserData?.givenName?.trim() || msUserData?.displayName?.trim(),
+                    username: msUserData?.surname?.trim(),
                     email: msUserData.mail,
-                    provider,
+                    // provider,
                 });        
             default:
                 break;

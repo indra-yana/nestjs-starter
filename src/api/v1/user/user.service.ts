@@ -321,14 +321,14 @@ export class UserService {
         return true;
     }
 
-    async findOrCreate(payloads: any): Promise<User> {
+    async findOrCreate(payloads: Partial<User>): Promise<User> {
         const { 
             name = randomName(), 
             username = randomUserName(), 
             password = randomPassword(),
             email, 
-            picture: avatar,
-            provider, 
+            avatar,
+            // provider, 
         } = payloads;
 
         let user = await this.usersRepository.findOne({
