@@ -328,7 +328,7 @@ export class UserService {
             password = randomPassword(),
             email, 
             avatar,
-            // provider, 
+            provider,
         } = payloads;
 
         let user = await this.usersRepository.findOne({
@@ -350,6 +350,7 @@ export class UserService {
             email,
             password,
             avatar,
+            provider,
         }));
 
         // TODO: Assign roles

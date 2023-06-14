@@ -38,6 +38,12 @@ export class User extends BaseEntity<User>  {
 	@Column()
 	avatar: string;
 
+	@Column()
+	provider: string;
+
+	@Column()
+	provider_id: string;
+
 	@CreateDateColumn()
 	created_at: Date;
 

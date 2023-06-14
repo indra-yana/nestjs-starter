@@ -115,7 +115,7 @@ export class AuthService {
                     email: googleUserData.email,
                     avatar: googleUserData.picture,
                     email_verified_at: googleUserData?.email_verified ? new Date() : null,
-                    // provider,
+                    provider,
                 });
             case SOCIAL_AUTH.MICROSOFT:
                 const msUserData: MicrosoftAuthResponse = data as MicrosoftAuthResponse;
@@ -124,7 +124,7 @@ export class AuthService {
                     name: msUserData?.givenName?.trim() || msUserData?.displayName?.trim(),
                     username: msUserData?.surname?.trim(),
                     email: msUserData.mail,
-                    // provider,
+                    provider,
                 });        
             default:
                 break;
