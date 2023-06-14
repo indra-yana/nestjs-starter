@@ -2,13 +2,35 @@ import { Injectable } from '@nestjs/common';
 import { joiValidationFormat } from 'src/core/helper/helper';
 import { JwtService } from '@nestjs/jwt';
 import { LocaleService } from 'src/core/common/locale/locale.service';
+import { SOCIAL_AUTH } from 'src/core/helper/constant';
+import { SocialAuthProvider } from 'src/core/helper/common-type';
+import { User } from '../database/typeorm/entities/user';
 import { UserService } from '../../../api/v1/user/user.service';
 import * as bcrypt from 'bcrypt'; 
 import AuthenticationException from 'src/core/exceptions/AuthenticationException';
 import ForbidenException from 'src/core/exceptions/ForbidenException';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import validateEmail from 'filter-validate-email';
-import { User } from '../database/typeorm/entities/user';
+
+export type GoogleAuthResponse = {
+    email: string;
+    given_name: string;
+    family_name: string;
+    picture: string;
+}
+
+export type MicrosoftAuthResponse = {
+    userPrincipalName: string;
+    displayName: string;
+    surname: string;
+    givenName: string;
+    preferredLanguage: string;
+    mail: string;
+    mobilePhone: string;
+    jobTitle: string;
+    officeLocation: string;
+    businessPhones: string;
+}
 
 @Injectable()
 export class AuthService {
@@ -80,11 +102,28 @@ export class AuthService {
         }
     }
 
-    async socialAuth(data: any, provider: string) {
-        return await this.userService.findOrCreate({
-            ...data,
-            provider,
-        });
+    async socialAuth(data: GoogleAuthResponse | MicrosoftAuthResponse, provider: SocialAuthProvider): Promise<User> {
+        switch (provider) {
+            case SOCIAL_AUTH.GOOGLE:
+                const googleUserData: GoogleAuthResponse = data as GoogleAuthResponse;
+
+                return await this.userService.findOrCreate({
+                    name: googleUserData.given_name,
+                    email: googleUserData.email,
+                    avatar: googleUserData.picture,
+                    provider,
+                });
+            case SOCIAL_AUTH.MICROSOFT:
+                const msUserData: MicrosoftAuthResponse = data as MicrosoftAuthResponse;
+
+                return await this.userService.findOrCreate({
+                    name: msUserData.givenName || msUserData.surname || msUserData.displayName,
+                    email: msUserData.mail,
+                    provider,
+                });        
+            default:
+                break;
+        }
     }
 
     verifyJwt(token: string) {

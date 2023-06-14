@@ -352,6 +352,8 @@ export class UserService {
             avatar,
         }));
 
+        // TODO: Assign roles
+
         return await this.find(user.id);
     }
 

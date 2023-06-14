@@ -1,0 +1,1 @@
+export type SocialAuthProvider = 'google' | 'microsoft' | 'facebook' | 'twitter' | 'github';
