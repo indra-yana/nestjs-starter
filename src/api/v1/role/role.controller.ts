@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
 import { createRoleSchema, updateRoleSchema, validateIdSchema } from './role.validator.schema';
 import { RoleService } from './role.service';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller({
     path: 'role',
     version: '1',

@@ -6,6 +6,7 @@ import { Roles } from 'src/core/decorator/role.decorator';
 import { UserService } from './user.service';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller({
     path: 'user',
     version: '1',
@@ -76,8 +77,7 @@ export class UserController {
         }
     }
 
-    @Roles(['root'])
-    @UseInterceptors(ClassSerializerInterceptor)
+    // @Roles(['root'])
     @Get('list')
     async all(
         @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,

@@ -1,9 +1,10 @@
 import { AuthService } from '../../../core/common/auth/auth.service';
-import { Controller, Body, Post, Request, Put } from '@nestjs/common';
+import { Controller, Body, Post, Request, Put, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { ForgotPasswordService } from './forgot-password.service';
 import { MailerService } from 'src/core/common/mailer/mailer.service';
 import { Throttle } from '@nestjs/throttler';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller({
     path: 'auth/password',
     version: '1'

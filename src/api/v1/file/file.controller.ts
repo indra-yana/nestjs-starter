@@ -1,4 +1,4 @@
-import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createFileSchema } from './file.validator.schema';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
 import { fileMapper, FILE_PATH, readRemoteFile, STORAGE_DRIVER } from 'src/core/common/storage/file-helper';
@@ -8,6 +8,7 @@ import { resolve } from 'path';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller({
     path: 'file',
     version: '1',

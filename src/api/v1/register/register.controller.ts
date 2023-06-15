@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createUserSchema } from '../user/user.validator.schema';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
 import { localStorage } from 'src/core/common/storage/local.storage';
@@ -8,6 +8,7 @@ import { UserService } from '../user/user.service';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 import { VerifyService } from '../verify/verify.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller({
     path: 'auth',
     version: '1',

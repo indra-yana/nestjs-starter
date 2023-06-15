@@ -5,6 +5,7 @@ import { LocalAuthGuard } from 'src/core/common/auth/guards/local.guard';
 import { MicrosoftAuthGuard } from 'src/core/common/auth/guards/microsoft.guard';
 import { PublicRoute } from 'src/core/decorator/public-route.decorator';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller({
     path: 'auth',
     version: '1'
@@ -48,7 +49,6 @@ export class LoginController {
         }
     }
 	
-    @UseInterceptors(ClassSerializerInterceptor)
     @Get('whoami')
     async whoami(@Request() request: any) {
         try {			

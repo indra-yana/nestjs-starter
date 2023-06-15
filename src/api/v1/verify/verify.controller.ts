@@ -1,11 +1,12 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Post, Req } from '@nestjs/common';
 import { MailerService } from 'src/core/common/mailer/mailer.service';
-import { Put } from '@nestjs/common/decorators';
+import { Put, UseInterceptors } from '@nestjs/common/decorators';
 import { Throttle } from '@nestjs/throttler';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 import { verifyAccountSchema } from './verify.validator.schema';
 import { VerifyService } from './verify.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller({
     path: 'auth/verify',
     version: '1',
