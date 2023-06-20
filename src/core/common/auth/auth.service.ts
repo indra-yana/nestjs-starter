@@ -35,6 +35,16 @@ export type MicrosoftAuthResponse = {
     businessPhones: string;
 }
 
+export type GithubAuthResponse = {
+    email: string;
+    avatar_url: string;
+    name: string;
+    login: string;
+    scope: string;
+    bio: string;
+    created_at: string;
+}
+
 @Injectable()
 export class AuthService {
     constructor(
@@ -105,7 +115,7 @@ export class AuthService {
         }
     }
 
-    async socialAuth(data: GoogleAuthResponse | MicrosoftAuthResponse, provider: SocialAuthProvider): Promise<User> {
+    async socialAuth(data: GoogleAuthResponse | MicrosoftAuthResponse | GithubAuthResponse, provider: SocialAuthProvider): Promise<User> {
         switch (provider) {
             case SOCIAL_AUTH.GOOGLE:
                 const googleUserData: GoogleAuthResponse = data as GoogleAuthResponse;
@@ -124,6 +134,15 @@ export class AuthService {
                     name: msUserData?.givenName?.trim() || msUserData?.displayName?.trim(),
                     username: msUserData?.surname?.trim(),
                     email: msUserData.mail,
+                    provider,
+                });        
+            case SOCIAL_AUTH.GITHUB:
+                const gitUserData: GithubAuthResponse = data as GithubAuthResponse;
+
+                return await this.userService.findOrCreate({
+                    name: gitUserData?.name?.trim(),
+                    username: gitUserData?.login?.trim(),
+                    email: gitUserData.email,
                     provider,
                 });        
             default:

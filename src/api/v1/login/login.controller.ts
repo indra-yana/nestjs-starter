@@ -1,5 +1,6 @@
 import { AuthService } from '../../../core/common/auth/auth.service';
 import { Controller, HttpCode, Post, UseGuards, Request, Get, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
+import { GithubAuthGuard } from 'src/core/common/auth/guards/github.guard';
 import { GoogleAuthGuard } from 'src/core/common/auth/guards/google.guard';
 import { LocalAuthGuard } from 'src/core/common/auth/guards/local.guard';
 import { MicrosoftAuthGuard } from 'src/core/common/auth/guards/microsoft.guard';
@@ -42,6 +43,18 @@ export class LoginController {
     @HttpCode(200)
     @Post('login/microsoft')
     async microsoftLogin(@Request() request: any) {
+        try {
+            return this.authService.jwtAuth(request.user);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @PublicRoute()
+    @UseGuards(GithubAuthGuard)
+    @HttpCode(200)
+    @Post('login/github')
+    async githubLogin(@Request() request: any) {
         try {
             return this.authService.jwtAuth(request.user);
         } catch (error) {

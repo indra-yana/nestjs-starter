@@ -40,7 +40,7 @@ export class GoogleAuthGuard implements CanActivate {
             if (!user) {
                 throw new AuthenticationException({
                     message: this.locale.t('app.auth.login_failed'),
-                    tags: [GoogleAuthGuard.name, 'canActivate', 'guard']
+                    tags: [GoogleAuthGuard.name, 'canActivate', 'GoogleAuthGuard']
                 });
             }
 
