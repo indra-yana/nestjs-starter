@@ -1,3 +1,4 @@
+import { CreateUserDto } from './dto/create-user.dto';
 import { FILE_PATH } from 'src/core/common/storage/file-helper';
 import { getSkip, paginate, PagingQuery } from 'src/core/helper/pagination';
 import { Injectable } from '@nestjs/common';
@@ -8,11 +9,13 @@ import { Repository } from 'typeorm';
 import { Role } from 'src/core/common/database/typeorm/entities/role';
 import { RoleService } from '../role/role.service';
 import { StorageService } from 'src/core/common/storage/storage.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from 'src/core/common/database/typeorm/entities/user';
 import * as bcrypt from 'bcrypt';
 import InvariantException from 'src/core/exceptions/InvariantException';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import ValidationException from 'src/core/exceptions/ValidationException';
+import { RegisterDto } from '../register/dto/register.dto';
 
 @Injectable()
 export class UserService {
@@ -42,8 +45,8 @@ export class UserService {
         return this.httpRequest;
     }
 
-    async create(payload: any, file?: Express.Multer.File, directUpload: boolean = true) {
-        const { name, username, email, password } = payload;
+    async create(payloads: CreateUserDto | RegisterDto, file?: Express.Multer.File, directUpload: boolean = true) {
+        const { name, username, email, password } = payloads;
 
         await this.checkUsernameOrEmailExists(username, email);
 
@@ -75,12 +78,12 @@ export class UserService {
         await this.patchOneBy(id, 'avatar', uploadedFile.fileName);
     }
 
-    async update(payload: any, file?: Express.Multer.File, directUpload: boolean = true) {
-        const { id, name, username, email } = payload;
+    async update(payloads: UpdateUserDto, file?: Express.Multer.File, directUpload: boolean = true) {
+        const { id, name, username, email } = payloads;
 
         await this.checkUniqueUsernameOrEmail(id, username, email);
 
-        const params: any = {
+        const params: Partial<User> = {
             name,
             username,
             email,

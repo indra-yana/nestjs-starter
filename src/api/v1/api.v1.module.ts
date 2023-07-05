@@ -14,14 +14,14 @@ import { VerifyModule } from './verify/verify.module';
 
 @Module({
     imports: [
+        FileModule,
         IndexModule,
-        UserModule,
-        RegisterModule,
         LoginModule,
         PasswordModule,
-        VerifyModule,
+        RegisterModule,
         RoleModule,
-        FileModule,
+        UserModule,
+        VerifyModule,
     ],
     providers: [
         {

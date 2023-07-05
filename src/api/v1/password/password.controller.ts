@@ -2,6 +2,8 @@ import { AuthService } from '../../../core/common/auth/auth.service';
 import { Controller, Body, Post, Request, Put, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { ForgotPasswordService } from './forgot-password.service';
 import { MailerService } from 'src/core/common/mailer/mailer.service';
+import { PublicRoute } from 'src/core/decorator/public-route.decorator';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { Throttle } from '@nestjs/throttler';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -27,6 +29,7 @@ export class PasswordController {
 
     @Throttle(5, 60)
     @Post('email')
+    @PublicRoute()
     async sendResetPasswordLink(@Body('email') email: string) {
         try {
             const link = await this.forgotPasswordService.createPasswordResetLink(email);
@@ -36,10 +39,12 @@ export class PasswordController {
         }
     }
 
+    @Throttle(5, 60)
     @Put('reset')
-    async resetPassword(@Body() payload: any) {
+    @PublicRoute()
+    async resetPassword(@Body() payloads: ResetPasswordDto) {
         try {
-            return await this.forgotPasswordService.resetPassword(payload);
+            return await this.forgotPasswordService.resetPassword(payloads);
         } catch (error) {
             throw error;
         }

@@ -3,6 +3,7 @@ import { createToken, joiValidationFormat } from 'src/core/helper/helper';
 import { Injectable } from '@nestjs/common';
 import { LocaleService } from 'src/core/common/locale/locale.service';
 import { UserService } from '../user/user.service';
+import { VerifyAccountDto } from './dto/verify.dto';
 import ValidationException from 'src/core/exceptions/ValidationException';
 
 @Injectable()
@@ -11,12 +12,11 @@ export class VerifyService {
         private userService: UserService,
         private locale: LocaleService,
         private configService: ConfigService,
-    ) {}
+    ) { }
 
-    async verify(payload: any) {
-        const { email, token, expire } = payload;
-        const expires = parseInt(expire);
-        const matches = token === createToken(email, expires);
+    async verify(payloads: VerifyAccountDto) {
+        const { email, token, expire } = payloads;
+        const matches = token === createToken(email, expire);
 
         if (!matches) {
             throw new ValidationException({
@@ -30,7 +30,7 @@ export class VerifyService {
             });
         }
 
-        if (Date.now() > expires) {
+        if (Date.now() > expire) {
             throw new ValidationException({
                 message: this.locale.t('app.verify.expired'),
                 error: joiValidationFormat([

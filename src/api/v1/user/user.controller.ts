@@ -1,10 +1,11 @@
 import { addUserRoleSchema, createUserSchema, updateUserSchema, validateIdSchema } from './user.validator.schema';
 import { Body, ClassSerializerInterceptor, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
 import { FileInterceptor } from '@nest-lab/fastify-multer/src/lib/interceptors';
 import { localStorage } from 'src/core/common/storage/local.storage';
-import { Roles } from 'src/core/decorator/role.decorator';
 import { UserService } from './user.service';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller({
@@ -21,7 +22,7 @@ export class UserController {
     @UseInterceptors(FileInterceptor('avatar', {
         storage: localStorage(),
     }))
-    async create(@Req() request: any, @Body() body: any, @UploadedFile() file: Express.Multer.File) {
+    async create(@Req() request: any, @Body() body: CreateUserDto, @UploadedFile() file: Express.Multer.File) {
         try {
             this.validator.schema(createUserSchema).validate({ 
                 ...body, 
@@ -57,7 +58,7 @@ export class UserController {
     @UseInterceptors(FileInterceptor('avatar', {
         storage: localStorage(),
     }))
-    async update(@Req() request: any, @Body() body: any, @UploadedFile() file: Express.Multer.File) {
+    async update(@Req() request: any, @Body() body: UpdateUserDto, @UploadedFile() file: Express.Multer.File) {
         try {
             this.validator.schema(updateUserSchema).validate({ 
                 ...body, 

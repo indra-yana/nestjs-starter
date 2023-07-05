@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LocaleService } from 'src/core/common/locale/locale.service';
 import { PasswordReset } from 'src/core/common/database/typeorm/entities/password-reset';
 import { Repository } from 'typeorm';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UserService } from '../user/user.service';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import ValidationException from 'src/core/exceptions/ValidationException';
@@ -19,8 +20,8 @@ export class ForgotPasswordService {
         private passwordResetRepository: Repository<PasswordReset>,
     ) {}
 
-    async resetPassword(payload: any) {
-        const { email, password, token } = payload;
+    async resetPassword(payloads: ResetPasswordDto) {
+        const { email, password, token } = payloads;
         const tokenPart = await this.checkToken(email, token);
         const expires = tokenPart.expire_at;
         const matches = tokenPart.token === createToken(email, expires);

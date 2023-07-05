@@ -3,6 +3,7 @@ import { MailerService } from 'src/core/common/mailer/mailer.service';
 import { Put, UseInterceptors } from '@nestjs/common/decorators';
 import { Throttle } from '@nestjs/throttler';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
+import { VerifyAccountDto } from './dto/verify.dto';
 import { verifyAccountSchema } from './verify.validator.schema';
 import { VerifyService } from './verify.service';
 
@@ -37,7 +38,7 @@ export class VerifyController {
     }
 
     @Put()
-    async verifyAccount(@Body() body: any) {
+    async verifyAccount(@Body() body: VerifyAccountDto) {
         try {
             this.validator.schema(verifyAccountSchema).validate(body);
             

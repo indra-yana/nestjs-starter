@@ -1,6 +1,8 @@
 import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
+import { CreateRoleDto } from './dto/create-role.dto';
 import { createRoleSchema, updateRoleSchema, validateIdSchema } from './role.validator.schema';
 import { RoleService } from './role.service';
+import { UpdateRoleDto } from './dto/update-role.dto';
 import { ValidatorService } from 'src/core/common/validator/validator.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -15,7 +17,7 @@ export class RoleController {
     ) { }
 
     @Post('create')
-    async create(@Body() body: object) {
+    async create(@Body() body: CreateRoleDto) {
         try {
             this.validator.schema(createRoleSchema).validate(body);
 
@@ -39,7 +41,7 @@ export class RoleController {
     }
 
     @Put('update')
-    async update(@Body() body: object) {
+    async update(@Body() body: UpdateRoleDto) {
         try {
             this.validator.schema(updateRoleSchema).validate(body);
 

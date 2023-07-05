@@ -16,8 +16,8 @@ export class RoleService {
         private locale: LocaleService
     ) {}
 
-    async create(payload: any) {
-        let { name } = payload;
+    async create(payloads: any) {
+        let { name } = payloads;
         name = name.toUpperCase()
 
         await this.checkNameExists(name);
@@ -32,8 +32,8 @@ export class RoleService {
         }
     }
 
-    async update(payload: any) {
-        const { id, name } = payload;
+    async update(payloads: any) {
+        const { id, name } = payloads;
 
         await this.checkUniqueName(id, name);
 
