@@ -5,7 +5,7 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { NestFactory } from '@nestjs/core';
 import fastifyHelmet from '@fastify/helmet';
 
-export async function CreateFastifyApplication(opts: any = {}) {
+export async function CreateFastifyApplication(opts: any = {}): Promise<NestFastifyApplication> {
     const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(opts),
