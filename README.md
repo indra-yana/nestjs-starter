@@ -19,7 +19,7 @@
 
 This is a starter kit project to quickly setup and start working on a new Nest JS REST API application. This is a boilerplate with common standard features like authentication, roles management, file management, and more. 
 
-This project will help you to cut development time process instead of build a nest js app from scratch, please read the complete [documentation](https://docs.nestjs.com) to know basic fundamental of nest framework.
+This project will improve development process instead of build a nest js app from scratch, please read the complete [documentation](https://docs.nestjs.com) to know basic fundamental of nest framework.
 
 ### Dev Stack
 
