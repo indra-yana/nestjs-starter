@@ -1,6 +1,8 @@
 import { registerAs } from "@nestjs/config";
 
 export default registerAs('helmet', () => ({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false,
     contentSecurityPolicy: {
         directives: {
             defaultSrc: [
