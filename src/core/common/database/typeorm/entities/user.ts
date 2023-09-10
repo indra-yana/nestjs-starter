@@ -1,20 +1,10 @@
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  BeforeInsert,
-  UpdateDateColumn,
-  CreateDateColumn,
-  DeleteDateColumn,
-  OneToMany,
-  JoinTable,
-  ManyToMany,
-} from 'typeorm';
-import * as bcrypt from 'bcrypt';
-import BaseEntity from '../base.entity';
+import { Entity, Column, PrimaryColumn, BeforeInsert, UpdateDateColumn, CreateDateColumn, DeleteDateColumn, OneToMany, JoinTable, ManyToMany, AfterLoad, } from 'typeorm';
+import { Exclude, Transform } from 'class-transformer';
 import { File } from './file';
 import { Role } from './role';
-import { Exclude, Transform } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
+import BaseEntity from '../base.entity';
 
 @Entity('users')
 export class User extends BaseEntity<User>  {
@@ -61,12 +51,24 @@ export class User extends BaseEntity<User>  {
 		this.password = bcrypt.hashSync(this.password, 10);
 	}
 
+	@AfterLoad()
+	generateGravatar() {
+		if (!this.avatar) {
+			const emailHash = crypto
+				.createHash("md5")
+				.update(this.email)
+				.digest("hex");
+
+			this.avatar = `https://www.gravatar.com/avatar/${emailHash}?d=wavatar&s=140`;
+		};
+	}
+
 	@OneToMany(() => File, (file) => file.user)
-    files: File[]
+	files: File[]
 
 	@Transform(({ value }) => value.map((role: Role) => role.name.toLowerCase().replace(/\s+/g, "_")))
 	@ManyToMany(() => Role)
-    @JoinTable({ 
+	@JoinTable({
 		name: 'user_roles',
 		inverseJoinColumn: {
 			name: 'role_id',
