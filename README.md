@@ -71,6 +71,11 @@ This project will improve development process instead of build a nest js app fro
 
 ### Installation
 
+#### Requirement:
+- Node.JS 16.x
+- Postgre SQL
+- SMTP Mail Server
+
 ```bash
 git clone https://github.com/indra-yana/nestjs-starter.git
 
