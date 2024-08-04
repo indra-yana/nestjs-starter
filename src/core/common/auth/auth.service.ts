@@ -12,6 +12,11 @@ import ForbidenException from 'src/core/exceptions/ForbidenException';
 import NotFoundException from 'src/core/exceptions/NotFoundException';
 import validateEmail from 'filter-validate-email';
 
+export type EMSAuthResponse = {
+    username: string;
+    email: string;
+}
+
 export type GoogleAuthResponse = {
     email: string;
     name: string;
@@ -100,6 +105,11 @@ export class AuthService {
         return result;
     }
 
+    async emsAuth(credential: string, password: string) {
+        // TODO
+        return true;
+    }
+
     async jwtAuth(user: User) {
         const payload = { 
             _uid: user.id, 
@@ -159,23 +169,4 @@ export class AuthService {
         }
     }
 
-    async confirmPassword(id: string, password: string) {
-        const user = await this.userService.find(id, true);
-        if (!user) {
-            throw new NotFoundException({ message: this.locale.t('app.message.data_notfound')});
-        }
-        
-        const match = await bcrypt.compare(password, user.password);
-        if (!match) {
-            throw new ForbidenException({
-                message: this.locale.t('app.password.incorrect'),
-                error: joiValidationFormat([
-                    {
-                        path: ['password'],
-                        message: this.locale.t('app.auth.password'),
-                    },
-                ]),
-            });
-        }
-    }
 }

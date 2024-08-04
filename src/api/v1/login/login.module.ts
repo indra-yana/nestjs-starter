@@ -1,11 +1,8 @@
 import { LoginController } from './login.controller';
 import { Module } from '@nestjs/common';
-import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [
-    UserModule, 
-  ],
+  imports: [],
   exports: [],
   providers: [],
   controllers: [LoginController]
