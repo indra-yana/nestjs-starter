@@ -1,19 +1,24 @@
+import { AuthService } from 'src/core/common/auth/auth.service';
+import { ConfigService } from '@nestjs/config';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-local';
-import { AuthService } from 'src/core/common/auth/auth.service';
 
 @Injectable()
-export class LocalStrategyService extends PassportStrategy(Strategy, 'basic_auth') {
-    constructor(private authService: AuthService) {
+export class EMSStrategyService extends PassportStrategy(Strategy, 'jwt_auth') {
+    constructor(
+        private readonly authService: AuthService,
+        private readonly configService: ConfigService,
+    ) {    
         super({
-            usernameField: 'credential',
-            passwordField: 'password',
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: configService.get('auth.jwt.access_token_key'),
         });
     }
 
-    async validate(credential: string, password: string): Promise<any> {
-        const user = await this.authService.emsAuth(credential, password);
-        return user;
-      }
+    async validate(payload: any) {        
+        return await this.authService.whoami(payload._uid);
+    }
 }
+

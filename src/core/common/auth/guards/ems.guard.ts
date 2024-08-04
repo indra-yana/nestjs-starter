@@ -1,9 +1,8 @@
-import { AuthService, EMSAuthResponse, MicrosoftAuthResponse } from 'src/core/common/auth/auth.service';
+import { AuthService, EMSAuthResponse } from 'src/core/common/auth/auth.service';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FastifyRequest } from 'fastify';
 import { LocaleService } from '../../locale/locale.service';
-import { SOCIAL_AUTH } from 'src/core/helper/constant';
 import AuthenticationException from 'src/core/exceptions/AuthenticationException';
 import axios from 'axios';
 
@@ -19,12 +18,15 @@ export class EMSAuthGuard implements CanActivate {
         try {
             const request = context.switchToHttp().getRequest<FastifyRequest>();  
             const { body } = request;
-            // TODO: gunakan key identifier
             const accessToken = body['access_token'];
-        
-            const userInfo = await axios.get('https://ems.royalcorp.co.id/api/v1/login', {
+            const postData = {
+                username: body['identity'],
+                password: body['password'],
+            };
+            const userInfo = await axios.post('https://ems.royalcorp.co.id/api/v1/login', postData, {
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
                 }
             });
           

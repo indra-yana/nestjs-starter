@@ -18,6 +18,6 @@ export class JWTStrategyService extends PassportStrategy(Strategy, 'jwt_auth') {
     }
 
     async validate(payload: any) {        
-        // return await this.authService.whoami(payload._uid);
+        return await this.authService.whoami(payload._uid);
     }
 }

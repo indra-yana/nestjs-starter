@@ -5,13 +5,11 @@ import { JWTStrategyService } from './strategies/jwt.strategy.service';
 import { LocaleModule } from '../locale/locale.module';
 import { LocalStrategyService } from './strategies/local.strategy.service';
 import { PassportModule } from '@nestjs/passport';
-import { UserModule } from 'src/api/v1/user/user.module';
 
 @Global()
 @Module({
     imports: [
         LocaleModule,
-        UserModule,
         PassportModule, 
         JwtModule.register({
             secret: process.env.ACCESS_TOKEN_KEY,
