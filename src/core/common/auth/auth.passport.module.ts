@@ -5,21 +5,20 @@ import { JWTStrategyService } from './strategies/jwt.strategy.service';
 import { LocaleModule } from '../locale/locale.module';
 import { LocalStrategyService } from './strategies/local.strategy.service';
 import { PassportModule } from '@nestjs/passport';
-import { EmsStrategyService } from './strategies/ems.strategy.service';
 
 @Global()
 @Module({
     imports: [
         LocaleModule,
-        PassportModule, 
+        PassportModule,
         JwtModule.register({
             secret: process.env.ACCESS_TOKEN_KEY,
-            signOptions: { 
+            signOptions: {
                 expiresIn: process.env.ACCESS_TOKEN_AGE
             },
         })
     ],
     exports: [AuthService],
-    providers: [AuthService, LocalStrategyService, JWTStrategyService, EmsStrategyService],
+    providers: [AuthService, LocalStrategyService, JWTStrategyService],
 })
-export class AuthPassportModule {}
+export class AuthPassportModule { }
