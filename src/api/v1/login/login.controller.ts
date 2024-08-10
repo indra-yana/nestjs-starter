@@ -1,6 +1,7 @@
 import { AuthService } from '../../../core/common/auth/auth.service';
 import { Controller, HttpCode, Post, UseGuards, Request, Get, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
-import { EMSAuthGuard } from 'src/core/common/auth/guards/ems.guard';
+import { Throttle } from '@nestjs/throttler';
+import { EmsAuthGuard } from 'src/core/common/auth/guards/ems.guard';
 import { PublicRoute } from 'src/core/decorator/public-route.decorator';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -11,7 +12,8 @@ import { PublicRoute } from 'src/core/decorator/public-route.decorator';
 export class LoginController {
     constructor(private authService: AuthService) { }
 
-    @UseGuards(EMSAuthGuard)
+    @Throttle({ default: { limit: 3, ttl: 60000 } })
+    @UseGuards(EmsAuthGuard)
     @PublicRoute()
     @HttpCode(200)
     @Post('login')

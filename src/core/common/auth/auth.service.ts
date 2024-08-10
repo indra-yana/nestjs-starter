@@ -26,8 +26,13 @@ export class AuthService {
         };
     }
 
-    async whoami(id: string) {        
-        return true;
+    async whoami(id: string) {      
+        // TODO: Fetch who am i to ems
+        return {
+            id: 1,
+            username: 'admin.it',
+            email: 'admin.it@royalcorp.co.id',
+        };
     }
 
     async emsAuth(credential: string, password: string) {

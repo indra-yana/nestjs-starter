@@ -34,7 +34,9 @@ import ratelimiter from './core/config/ratelimiter';
 		}),
 		ThrottlerModule.forRootAsync({
 			inject: [ConfigService],
-			useFactory: (configService: ConfigService) => configService.get('ratelimiter.default'),
+			useFactory: (configService: ConfigService) => [
+				configService.get('ratelimiter.default')
+			],
 		}),
 	],
 })

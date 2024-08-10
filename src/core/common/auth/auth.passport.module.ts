@@ -5,6 +5,7 @@ import { JWTStrategyService } from './strategies/jwt.strategy.service';
 import { LocaleModule } from '../locale/locale.module';
 import { LocalStrategyService } from './strategies/local.strategy.service';
 import { PassportModule } from '@nestjs/passport';
+import { EmsStrategyService } from './strategies/ems.strategy.service';
 
 @Global()
 @Module({
@@ -19,6 +20,6 @@ import { PassportModule } from '@nestjs/passport';
         })
     ],
     exports: [AuthService],
-    providers: [AuthService, LocalStrategyService, JWTStrategyService],
+    providers: [AuthService, LocalStrategyService, JWTStrategyService, EmsStrategyService],
 })
 export class AuthPassportModule {}
