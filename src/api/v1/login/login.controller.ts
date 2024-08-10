@@ -1,8 +1,10 @@
 import { AuthService } from '../../../core/common/auth/auth.service';
-import { Controller, HttpCode, Post, UseGuards, Request, Get, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
-import { Throttle } from '@nestjs/throttler';
-import { EmsAuthGuard } from 'src/core/common/auth/guards/ems.guard';
+import { Controller, HttpCode, Post, Request, Get, ClassSerializerInterceptor, UseInterceptors, Body } from '@nestjs/common';
+import { LoginDto } from './dto/login.dto';
+import { loginSchema } from './login.validator.schema';
 import { PublicRoute } from 'src/core/decorator/public-route.decorator';
+import { Throttle } from '@nestjs/throttler';
+import { ValidatorService } from 'src/core/common/validator/validator.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller({
@@ -10,16 +12,21 @@ import { PublicRoute } from 'src/core/decorator/public-route.decorator';
     version: '1'
 })
 export class LoginController {
-    constructor(private authService: AuthService) { }
+    constructor(
+        private authService: AuthService,
+        private validator: ValidatorService
+    ) { }
 
     @Throttle({ default: { limit: 3, ttl: 60000 } })
-    @UseGuards(EmsAuthGuard)
     @PublicRoute()
     @HttpCode(200)
     @Post('login')
-    async login(@Request() request: any) {
+    async login(@Body() payloads: LoginDto) {
         try {
-            return this.authService.jwtAuth(request.user);
+            this.validator.schema(loginSchema).validate(payloads);
+
+            const user = await this.authService.emsAuth(payloads);
+            return this.authService.jwtAuth(user);
         } catch (error) {
             throw error;
         }

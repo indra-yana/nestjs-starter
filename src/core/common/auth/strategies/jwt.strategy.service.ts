@@ -1,4 +1,4 @@
-import { AuthService } from '../auth.service';
+import { AuthService, JwtAuthResponse } from '../auth.service';
 import { ConfigService } from '@nestjs/config';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Injectable } from '@nestjs/common';
@@ -17,7 +17,7 @@ export class JWTStrategyService extends PassportStrategy(Strategy, 'jwt_auth') {
         });
     }
 
-    async validate(payload: any) {        
-        return await this.authService.whoami(payload._uid);
+    async validate(payload: JwtAuthResponse) {        
+        return await this.authService.whoami(payload);
     }
 }
