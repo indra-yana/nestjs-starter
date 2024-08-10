@@ -1,7 +1,7 @@
 import { registerAs } from "@nestjs/config";
 
 export default registerAs('cors', () => ({
-    origin: process.env.ORIGINS?.split(',') || false,
+    origin: process.env.ORIGINS?.split(',') || '*',
     methods: [
         'GET',
         'HEAD',
