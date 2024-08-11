@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 import { joiValidationFormat } from 'src/core/helper/helper';
 import { JwtService } from '@nestjs/jwt';
@@ -26,6 +27,7 @@ export class AuthService {
     constructor(
         private jwtService: JwtService,
         private locale: LocaleService,
+        private configService: ConfigService,
     ) { }
 
     credentialField(value: string): string {
@@ -40,21 +42,22 @@ export class AuthService {
 
     async emsAuth(loginDto: LoginDto): Promise<EMSAuthResponse> {
         try {
-            const response = await axios.post('http://ras-hrms.test/oauth/token', {
+            const { client_id, client_secret } = this.configService.get('auth.ems');
+            const response = await axios.post('http://ras-hrms.test/api/v1/oauth/token', {
                 "grant_type": "password",
-                "client_id": "9cbccf7e-c219-4c33-8b10-b08719c36910",
-                "client_secret": "VvXD6mufYOheHUtFQgF0VlUcDt0ApftNRFrFIaKJ",
+                "client_id": client_id,
+                "client_secret": client_secret,
                 "username": loginDto.credential,
                 "password": loginDto.password,
-                "scope": "",
+                "scope": "*",
             }, {
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'x-access-key': 'mqi9qf95jbnleugcph0cu28nul7qiia8'
+                    'Accept': 'application/json',
                 }
             });
 
-            console.log(response);            
+            // console.log(response, client_id, client_secret);            
 
             // const { id, username, email, employee_id } = response.data;
             // return {

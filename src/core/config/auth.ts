@@ -11,5 +11,10 @@ export default registerAs('auth', () => ({
     google: {
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
+    },
+
+    ems: {
+        client_id: process.env.EMS_CLIENT_ID,
+        client_secret: process.env.EMS_CLIENT_SECRET,
     }
 }));
