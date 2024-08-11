@@ -1,4 +1,4 @@
-import { AuthService } from '../../../core/common/auth/auth.service';
+import { AuthService } from 'src/core/common/auth/auth.service';
 import { Controller, HttpCode, Post, Request, Get, ClassSerializerInterceptor, UseInterceptors, Body } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { loginSchema } from './login.validator.schema';
@@ -8,7 +8,7 @@ import { ValidatorService } from 'src/core/common/validator/validator.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller({
-    path: 'auth',
+    path: 'ems/auth',
     version: '1'
 })
 export class LoginController {

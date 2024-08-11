@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { joiValidationFormat } from 'src/core/helper/helper';
 import { JwtService } from '@nestjs/jwt';
 import { LocaleService } from 'src/core/common/locale/locale.service';
-import { LoginDto } from 'src/api/v1/login/dto/login.dto';
+import { LoginDto } from 'src/api/v1/ems/login/dto/login.dto';
 import AuthenticationException from 'src/core/exceptions/AuthenticationException';
 import axios from 'axios';
 import validateEmail from 'filter-validate-email';

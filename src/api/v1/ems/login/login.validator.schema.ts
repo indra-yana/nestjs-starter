@@ -6,5 +6,9 @@ import { Joi } from 'src/core/common/validator/validator.service';
 
 export const loginSchema = Joi.object({
 	credential: usernameSchema,
-	password: passwordSchema,
+	password: Joi
+		.string()
+		.min(6)
+		.max(191)
+		.required(),
 }).unknown();
