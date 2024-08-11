@@ -40,12 +40,21 @@ export class AuthService {
 
     async emsAuth(loginDto: LoginDto): Promise<EMSAuthResponse> {
         try {
-            // const response = await axios.post('https://ems.royalcorp.co.id/api/v1/login', loginDto, {
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'x-access-key': 'mqi9qf95jbnleugcph0cu28nul7qiia8'
-            //     }
-            // });
+            const response = await axios.post('http://ras-hrms.test/oauth/token', {
+                "grant_type": "password",
+                "client_id": "9cbccf7e-c219-4c33-8b10-b08719c36910",
+                "client_secret": "VvXD6mufYOheHUtFQgF0VlUcDt0ApftNRFrFIaKJ",
+                "username": loginDto.credential,
+                "password": loginDto.password,
+                "scope": "",
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'x-access-key': 'mqi9qf95jbnleugcph0cu28nul7qiia8'
+                }
+            });
+
+            console.log(response);            
 
             // const { id, username, email, employee_id } = response.data;
             // return {
@@ -67,7 +76,7 @@ export class AuthService {
                 error: joiValidationFormat([
                     {
                         path: ['credential'],
-                        message: this.locale.t('app.auth.failed.') + `message: ${error.message}`,
+                        message: this.locale.t('app.auth.failed') + `message: ${error.message}`,
                     },
                 ]),
                 tags: [AuthService.name, 'emsAuth']
