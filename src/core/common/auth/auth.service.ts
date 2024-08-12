@@ -47,7 +47,7 @@ export class AuthService {
                 "grant_type": "password",
                 "client_id": client_id,
                 "client_secret": client_secret,
-                "username": loginDto.credential,
+                "username": loginDto.username,
                 "password": loginDto.password,
                 "scope": "*",
             }, {
@@ -104,8 +104,8 @@ export class AuthService {
 
         return {
             token: {
-                accessToken: this.jwtService.sign(payload),
-                // refreshToken: null,
+                access_token: this.jwtService.sign(payload),
+                // refresh_token: null,
             }
         }
     }
